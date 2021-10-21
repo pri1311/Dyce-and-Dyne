@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="icon" href="/images/Aid logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="/stylesheets/home.css"> -->
+    <link rel="stylesheet" href="/stylesheets/navbar.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light ">
+        <br>
+        <div class="container">
+            <a class="navbar-brand link-navbar" href="/"
+                style="font-weight: 900; font-size:xx-large; color:white">Aid<span style="color:#ffb400">.</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle link-navbar" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i>Get Involved</i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item link-navbar" href="/donate">Donate</a>
+                            <a class="dropdown-item link-navbar" href="/volunteer">Volunteer</a>
+                            <a class="dropdown-item link-navbar" href="/store">Give by Shopping</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-navbar" href="/causes&stories">Causes and Stories |</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-navbar" href="/store">Store |</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-navbar" href="/events">Events |</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-navbar" href="/aboutus">About Us |</a>
+                    </li>
+                    <% if(!currentUser) {%>
+                        <li class="nav-item">
+                            <a class="nav-link link-navbar" href="/login">Login |</a>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle link-navbar" href="#" id="navbarDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i>
+                                        <%= currentUser.name %>
+                                    </i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item link-navbar" href="/profile">Profile</a>
+                                    <a class="dropdown-item link-navbar" href="/cart">Cart</a>
+                                    <a class="dropdown-item link-navbar" href="/logout">Logout</a>
+                                </div>
+                            </li>
+                            <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <title>Dyce&Dyne | Menu</title>
+    <link rel="stylesheet" href="/stylesheets/cover-pic.css" />
+    <link rel="stylesheet" href="/stylesheets/store.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+
+    <div id="cover-pic" style="background-image: url(../images/store.jpg)">
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <div class="container" id="pic">
+            <div id="pic-text-one">
+                Order with <b>Dyce&Dyne</b><span style="color: #ffb400">.</span>
+            </div>
+            <!-- <div id="pic-text-two">Small actions lead to big changes.</div> -->
+            <br />
+            <a id="pic-button" class="btn btn-md" href="#links"> STORE</a>
+            &nbsp;
+            <% if (currentUser) { %>
+                <a id="pic-button" class="btn btn-md" href="/cart">MY CART</a>
+                &nbsp;
+                <a id="pic-button" class="btn btn-md" href="/profile#orders">MY ORDERS</a>
+                <% } else { %>
+                    <div></div>
+                    <% } %>
+        </div>
+    </div>
+    <!-- <div class="container-fluid d-none d-md-block" id="links">
+        <br />
+        <div class="row justify-content-between">
+            <div class="col-2  text-center">
+                <a href="#men">Men <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="col-2 text-center ">
+                <a href="#women">Women<i class="fas fa-chevron-down"></i> </a>
+            </div>
+            <div class="col-2 text-center">
+                <a href="#beauty">Beauty <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="col-3 col-md-2 text-center">
+                <a href="#homedecor">Home Decor <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="col-1 col-md-2 text-center">
+                <a href="#food">Food <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="col-2 text-center">
+                <a href="#others">Others <i class="fas fa-chevron-down"></i></a>
+            </div>
+        </div>
+        <br />
+    </div> -->
+    <br />
+    <hr />
+    <br />
+    <div class=" container flash-container ">
+        <% if(error && error.length> 0 ) { %>
+            <div class="row d-flex justify-content-between m-2">
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert"
+                    style="width: 100%;">
+                    <%= error %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+            </div>
+            <% } %>
+                <% if(success && success.length> 0 ) { %>
+                    <div class="row d-flex justify-content-between m-2">
+                        <div class="alert alert-success alert-dismissible fade show text-center" role="alert"
+                            style="width: 100%;">
+                            <%= success %>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                    </div>
+                    <% } %>
+    </div>
+    <!-- <div class="container">
+        <h2>Our allItems and Charity !</h2>
+        <br>
+        <div> <b>For every purchase you make from Aid there is a smile on someone's face.</b>
+            <br>
+            Our allItems are hand made by local vendors and craftsmen.
+            We believe in the idea of Vocal for local and Make In India.
+            We support small businesses and shopping at these small businesses not only puts more money into their local
+            economies, it also keeps alive the diversity of options that makes each community unique. A major share of
+            money recieved from the store is used for education, shelter and clothing of poor.The rest is used for
+            logistics and maintainence prupose.
+            <br>
+            Happy Shopping and Charity !<i class="fas fa-heart" style="color:red;"></i>
+            <br>
+        </div>
+
+    </div> -->
+    <div class="container" id="men">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//imamsnbq.json" trigger="loop"
+                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b> M E N</b>
+        </div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <% for(var i=0; i < allItems.length; i++) {%>
+                    <% if (allItems[i].category=="Sandwich" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                            <div class="container pcont ">
+                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+
+
+    <div class="container" id="women">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//sodlceyy.json" trigger="loop"
+                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b>W O M E N</b>
+        </div>
+        <hr />
+        <div class="container ">
+            <div class="row">
+                <% for(var i=0; i<allItems.length; i++) {%>
+                    <% if (allItems[i].category=="Main Course" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3  ">
+                            <div class="container pcont ">
+                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <div class="container" id="beauty">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//rjzlnunf.json" trigger="loop"
+                colors="primary:#121331,secondary:#eeca66" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b>B E A U T Y</b>
+        </div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <% for(var i=0; i<allItems.length; i++) {%>
+                    <% if (allItems[i].category=="Starters" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
+                            <div class="container pcont ">
+                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container" id="homedecor">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//gmzxduhd.json" trigger="loop"
+                colors="primary:#121331,secondary:#eeca66" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b>H O M E D E C O R </b>
+        </div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <% for(var i=0; i<allItems.length; i++) {%>
+                    <% if (allItems[i].category=="homedecor" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
+                            <div class="container pcont ">
+                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <div class="container" id="food">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//jpdtnwas.json" trigger="loop"
+                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b>F O O D</b>
+        </div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <% for(var i=0; i<allItems.length; i++) {%>
+                    <% if (allItems[i].category=="food" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                            <div class="container pcont ">
+                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <div class="container" id="others">
+        <div>
+            <br />
+            <br />
+            <br />
+            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
+            <lord-icon src="https://cdn.lordicon.com//ribdawhq.json" trigger="loop"
+                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
+            </lord-icon>
+            <b>O T H E R S</b>
+        </div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <% for(var i=0; i<allItems.length; i++) {%>
+                    <% if (allItems[i].category=="others" ) {%>
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
+                            <div class="container pcont ">
+                                <div class="image mb-2" style="background-image: url('<%= allItems[i].image %>')">
+                                </div>
+                                <div clas="container">
+                                    <h6 class="card-title">
+                                        <%= allItems[i].title %>
+                                    </h6>
+                                </div>
+                                <div>
+                                    Rs. <%= allItems[i].cost %>
+                                        <hr class="mt-1 mb-2">
+                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
+                                            <button type="submit" href="#"
+                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <script src="/scripts/store.js"></script>
+    <%- //include("./partials/footer") %>
