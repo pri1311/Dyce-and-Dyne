@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+		/>
+		<title>Dyce&Dyne | Cart | <%= currentUser.name %></title>
+		<style>
+			/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+			/* Timeline holder */
+			ul.timeline {
+				list-style-type: none;
+				position: relative;
+				padding-left: 1.5rem;
+			}
+
+			/* Timeline vertical line */
+			ul.timeline:before {
+				content: " ";
+				background: #000;
+				display: inline-block;
+				position: absolute;
+				left: 16px;
+				width: 4px;
+				height: 100%;
+				z-index: 400;
+				border-radius: 1rem;
+			}
+
+			li.timeline-item {
+				margin: 20px 0;
+			}
+
+			/* Timeline item arrow */
+			.timeline-arrow {
+				border-top: 0.5rem solid transparent;
+				border-right: 0.5rem solid #000;
+				border-bottom: 0.5rem solid transparent;
+				display: block;
+				position: absolute;
+				left: 2rem;
+			}
+
+			/* Timeline item circle marker */
+			li.timeline-item::before {
+				content: " ";
+				background: #ddd;
+				display: inline-block;
+				position: absolute;
+				border-radius: 50%;
+				border: 3px solid #000;
+				left: 11px;
+				width: 14px;
+				height: 14px;
+				z-index: 400;
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+			}
+
+			.text-gray {
+				color: #999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<br />
+			<div class="container">
+				<a
+					class="navbar-brand link-navbar"
+					href="/"
+					style="font-weight: 900; font-size: xx-large; color: white"
+					>Aid<span style="color: #ffb400">.</span></a
+				>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-toggle="collapse"
+					data-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div
+					class="collapse navbar-collapse"
+					id="navbarSupportedContent"
+				>
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item dropdown">
+							<a
+								class="nav-link dropdown-toggle link-navbar"
+								href="#"
+								id="navbarDropdown"
+								role="button"
+								data-toggle="dropdown"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<i>Get Involved</i>
+							</a>
+							<div
+								class="dropdown-menu"
+								aria-labelledby="navbarDropdown"
+							>
+								<a
+									class="dropdown-item link-navbar"
+									href="/donate"
+									>Donate</a
+								>
+								<a
+									class="dropdown-item link-navbar"
+									href="/volunteer"
+									>Volunteer</a
+								>
+								<a
+									class="dropdown-item link-navbar"
+									href="/store"
+									>Give by Shopping</a
+								>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a
+								class="nav-link link-navbar"
+								href="/causes&stories"
+								>Causes and Stories |</a
+							>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link link-navbar" href="/store"
+								>Store |</a
+							>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link link-navbar" href="/events"
+								>Events |</a
+							>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link link-navbar" href="/aboutus"
+								>About Us |</a
+							>
+						</li>
+						<% if(!currentUser) {%>
+						<li class="nav-item">
+							<a class="nav-link link-navbar" href="/login"
+								>Login |</a
+							>
+						</li>
+						<% } else { %>
+						<li class="nav-item dropdown">
+							<a
+								class="nav-link dropdown-toggle link-navbar"
+								href="#"
+								id="navbarDropdown"
+								role="button"
+								data-toggle="dropdown"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<i> <%= currentUser.name %> </i>
+							</a>
+							<div
+								class="dropdown-menu"
+								aria-labelledby="navbarDropdown"
+							>
+								<a
+									class="dropdown-item link-navbar"
+									href="/profile"
+									>Profile</a
+								>
+								<a
+									class="dropdown-item link-navbar"
+									href="/cart"
+									>Cart</a
+								>
+								<a
+									class="dropdown-item link-navbar"
+									href="/logout"
+									>Logout</a
+								>
+							</div>
+						</li>
+						<% } %>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container row d-flex justify-content-center m-auto">
+			<div class="col-lg-4 col-sm-6">
+				<div class="col-12">
+					<div class="card">
+						<svg
+							class="bd-placeholder-img card-img-top"
+							width="100%"
+							height="180"
+							xmlns="http://www.w3.org/2000/svg"
+							aria-label="Placeholder: Image cap"
+							preserveAspectRatio="xMidYMid slice"
+							role="img"
+						>
+							<title>Placeholder</title>
+							<rect width="100%" height="100%" fill="#868e96" />
+							<text x="50%" y="50%" fill="#dee2e6" dy=".3em">
+								Image cap
+							</text>
+						</svg>
+
+						<div class="card-body">
+							<h5 class="card-title">Card title</h5>
+							<p class="card-text">
+								This card has supporting text below as a natural
+								lead-in to additional content.
+							</p>
+							<a href="#" class="btn btn-primary">Play!</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 pt-3">
+					<div class="card">
+						<svg
+							class="bd-placeholder-img card-img-top"
+							width="100%"
+							height="180"
+							xmlns="http://www.w3.org/2000/svg"
+							aria-label="Placeholder: Image cap"
+							preserveAspectRatio="xMidYMid slice"
+							role="img"
+						>
+							<title>Placeholder</title>
+							<rect width="100%" height="100%" fill="#868e96" />
+							<text x="50%" y="50%" fill="#dee2e6" dy=".3em">
+								Image cap
+							</text>
+						</svg>
+
+						<div class="card-body">
+							<h5 class="card-title">Card title</h5>
+							<p class="card-text">
+								This card has supporting text below as a natural
+								lead-in to additional content.
+							</p>
+							<a href="#" class="btn btn-primary">Play!</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8 col-sm-6">
+				<!-- <div class="card">
+					<h5 class="card-header"><%= currentUser.name %></h5>
+					<div class="card-body">
+						<h5 class="card-title">
+							Wallet Points: <%= currentUser.wallet %> points
+						</h5>
+						<p class="card-text">
+							Total Orders: <%= currentUser.orders.length %>
+						</p>
+					</div>
+				</div> -->
+				<div class="container py-5">
+					<div class="text-center mb-3">
+						<div class="col-lg-8 mx-auto">
+							<h1 class="display-4"><%= currentUser.name %></h1>
+							<p class="lead mb-0">
+								Wallet Points: <%= currentUser.wallet %> points
+							</p>
+							<p class="lead">
+								Total Orders: <%= currentUser.orders.length %>
+							</p>
+							<p class="lead">Order History:</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 mx-auto">
+							<!-- Timeline -->
+							<ul class="timeline">
+								<% for(i=0; i< orders.length; i++) { items = []
+								for (j = 0; j < orders[i].items.length; j++) {
+								items.push(orders[i].items[j].title); }
+								itemstring = items.join(', '); %>
+
+								<li
+									class="
+										timeline-item
+										bg-white
+										rounded
+										ml-3
+										p-4
+										shadow
+									"
+								>
+									<div class="timeline-arrow"></div>
+									<h3 class="h5 mb-0">
+										<%= orders[i].date %>
+									</h3>
+									<span class="small text-gray"
+										><i class="fa fa-clock-o mr-1"></i>Order
+										total: INR <%= orders[i].total %>
+									</span>
+									<p
+										class="
+											text-small
+											mt-2
+											font-weight-light
+										"
+									>
+										Order Summary: <%=itemstring %>
+									</p>
+								</li>
+								<% } %>
+							</ul>
+							<!-- End -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<% if(orders.length == 0) { %>
+		<p>No orders placed yet</p>
+		<% } else { %>
+		<p><%= orders[0].total %></p>
+		<% } %>
+		<script
+			src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>
