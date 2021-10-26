@@ -12,6 +12,7 @@ var orderSchema = new mongoose.Schema({
     email: String,
     name: String,
     address: String,
+    fullAddress: String,
   },
   paymentMode: String,
 });

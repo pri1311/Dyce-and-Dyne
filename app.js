@@ -394,6 +394,7 @@ app.post("/afterOrderPlaced", (req, res) => {
     User.findById(req.user._id, (err, founduser) => {
       if (err) console.log(err);
       else {
+        var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
         var new_order = new Order({
           items: req.user.cart.foodItems,
           total: req.user.cart.amountPayable,
@@ -401,7 +402,8 @@ app.post("/afterOrderPlaced", (req, res) => {
             id: req.user._id,
             email: req.user.username,
             name: req.body.name,
-            address: req.body.address,
+            address: `${req.body.locality}, ${req.body.city}`,
+            fullAddress: inputAddress,
           },
           paymentMode: req.body.paymentMode,
         });
@@ -412,14 +414,21 @@ app.post("/afterOrderPlaced", (req, res) => {
             // console.log(FoodItem);
             var f = 0;
             founduser.addresses.forEach((address) => {
-              if (address == req.body.address) {
+              if (address.fullAddress == inputAddress) {
                 // console.log("000000");
                 f = 1;
               }
             });
             if (f == 0) {
               //   console.log("01011010");
-              founduser.addresses.push(req.body.address);
+              var addressObj = {
+                fullAddress: inputAddress,
+                flatwing: req.body.flatwing,
+                locality: req.body.locality,
+                pincode: req.body.pincode,
+                city: req.body.city,
+              };
+              founduser.addresses.push(addressObj);
             }
             founduser.orders.push(order);
             founduser.wallet =
@@ -488,8 +497,15 @@ app.post("/signup", function (req, res) {
     name: req.body.name,
     phone: req.body.phone,
   });
-
-  newUser.addresses.push(req.body.addresses);
+  var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
+  var addressObj = {
+    fullAddress: inputAddress,
+    flatwing: req.body.flatwing,
+    locality: req.body.locality,
+    pincode: req.body.pincode,
+    city: req.body.city,
+  };
+  newUser.addresses.push(addressObj);
   User.register(newUser, req.body.password, function (err, user) {
     if (err) {
       console.log(err);
