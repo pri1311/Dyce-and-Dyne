@@ -152,7 +152,7 @@
 		<div class="container">
 			<div class="row justify-content-md-center">
 				<div class="col col-lg-auto">
-					<button onclick="getNewBoard()">New Game</button>
+					<button onclick="getNewGame()">New Game</button>
 				</div>
 				<div class="col-md-auto">
 					<button id="moves">Moves : 0</button>
@@ -167,6 +167,7 @@
 	<script>
 		var AI_moves = 0;
 		var player_moves = 0;
+		var boardGlobal = null;
 		movesButton = document.getElementById("moves");
 		function swapTiles(cell1, cell2) {
 			movesButton.innerHTML = "Moves: " + String(player_moves);
@@ -216,6 +217,7 @@
 					board[b - 1] = temp;
 				}
 			}
+			boardGlobal = board.slice();
 			return board;
 		}
 
@@ -228,16 +230,20 @@
 			while (!isSolvable(newBoard)) {
 				newBoard = shuffle(newBoard);
 			}
-			// newBoardwithZero = newBoard.slice();
-			// for (var i = 0; i < 9; i++) {
-			// 	if (newBoardwithZero[i] == 9) {
-			// 		newBoardwithZero[i] = 0;
-			// 		break;
-			// 	}
-			// }
+
 			console.log(newBoard);
+			boardGlobal = newBoard.slice();
+
 			// AI_moves = solve8puzzle(newBoard);
 			console.log(AI_moves);
+		}
+
+		async function getNewGame() {
+			$.when(getNewBoard()).then(async () => {
+				console.log(boardGlobal);
+				AI_moves = await solve8puzzle(boardGlobal);
+				console.log(AI_moves);
+			});
 		}
 
 		function clickTile(row, column) {

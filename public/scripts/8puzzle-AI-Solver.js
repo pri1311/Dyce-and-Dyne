@@ -239,6 +239,7 @@ class Solver {
 		var moves = 0;
 		while (node.parent != null) {
 			moves += 1;
+			this.path.push(node.parentMove);
 			node = node.parent;
 		}
 		return moves;
