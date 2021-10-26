@@ -4,120 +4,177 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+		/>
 		<title>8 Puzzle</title>
 		<style>
 			body {
-				font-family: "Helvetica";
+				height: 100vh;
+				width: 100%;
 			}
-
-			.game_title {
-				text-align: center;
-			}
-
-			#game_area {
-				height: 306px;
-				width: 306px;
-				margin: 0 auto;
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				border: 2px solid black;
-			}
-
-			.number-block {
-				height: 100px;
-				width: 100px;
-				border: 1px solid black;
-				text-align: center;
-				font-size: 78px;
+			.tile1,
+			.tile2,
+			.tile3,
+			.tile4,
+			.tile5,
+			.tile6,
+			.tile7,
+			.tile8,
+			.tile9 {
+				display: table-cell;
+				width: 120px;
+				height: 120px;
+				border: 1px solid white;
+				background: url("images/dessert.jpg");
 				cursor: pointer;
 			}
 
-			.void_class {
-				background: black;
-				color: grey;
-				cursor: not-allowed;
+			.tile1 {
+				background-position: left top;
 			}
-
-			#game_controls {
-				height: 100px;
-				width: 300px;
-				margin: 20px auto 0 auto;
-				text-align: center;
+			.tile2 {
+				background-position: center top;
 			}
-
-			.reset_btn {
-				height: 30px;
-				width: 100px;
-				background-color: white;
-				border: 1px solid black;
-				cursor: pointer;
+			.tile3 {
+				background-position: right top;
 			}
-
-			.reset_btn.focus,
-			.reset_btn:focus {
-				outline: 0;
-				box-shadow: none !important;
+			.tile4 {
+				background-position: left center;
 			}
-
-			#moves {
-				text-align: center;
-				margin: 5px;
+			.tile5 {
+				background-position: center center;
+			}
+			.tile6 {
+				background-position: right center;
+			}
+			.tile7 {
+				background-position: left bottom;
+			}
+			.tile8 {
+				background-position: center bottom;
+			}
+			.tile9 {
+				background: white;
+				cursor: default;
 			}
 		</style>
 	</head>
 	<body>
-		<h1 class="game_title">8 Puzzle Game</h1>
-		<div id="game_area"></div>
-		<div id="moves">Moves : 0</div>
-		<div id="game_controls"></div>
+		<div class="container py-5 mx-auto my-auto align-items-center">
+			<div class="row d-flex justify-content-center mx-auto">
+				<div class="col-lg-6 mx-auto justify-content-center">
+					<div class="mx-auto" id="table" style="display: table">
+						<div id="row1" style="display: table-row">
+							<div
+								id="cell11"
+								class="tile1"
+								onClick="clickTile(1,1);"
+							></div>
+							<div
+								id="cell12"
+								class="tile2"
+								onClick="clickTile(1,2);"
+							></div>
+							<div
+								id="cell13"
+								class="tile3"
+								onClick="clickTile(1,3);"
+							></div>
+						</div>
+						<div id="row2" style="display: table-row">
+							<div
+								id="cell21"
+								class="tile4"
+								onClick="clickTile(2,1);"
+							></div>
+							<div
+								id="cell22"
+								class="tile5"
+								onClick="clickTile(2,2);"
+							></div>
+							<div
+								id="cell23"
+								class="tile6"
+								onClick="clickTile(2,3);"
+							></div>
+						</div>
+						<div id="row3" style="display: table-row">
+							<div
+								id="cell31"
+								class="tile7"
+								onClick="clickTile(3,1);"
+							></div>
+							<div
+								id="cell32"
+								class="tile8"
+								onClick="clickTile(3,2);"
+							></div>
+							<div
+								id="cell33"
+								class="tile9"
+								onClick="clickTile(3,3);"
+							></div>
+						</div>
+					</div>
+				</div>
+				<div
+					class="
+						col-lg-6
+						mx-auto
+						justify-content-center
+						align-content-center
+					"
+				>
+					<div class="mx-auto">
+						<img
+							class="
+								mx-auto
+								align-self-center
+								justify-self-center
+								align-content-center
+							"
+							src="images/dessert.jpg"
+							alt=""
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row justify-content-md-center">
+				<div class="col col-lg-auto">
+					<button onclick="getNewBoard()">New Game</button>
+				</div>
+				<div class="col-md-auto">
+					<button id="moves">Moves : 0</button>
+				</div>
+				<div class="col col-lg-auto">
+					<button>How to Play!</button>
+				</div>
+			</div>
+		</div>
 	</body>
-	<script src="./8puzzle-AI-Solver.js"></script>
+	<script src="scripts/8puzzle-AI-Solver.js"></script>
 	<script>
-		function shuffle(array) {
-			let currentIndex = array.length,
-				randomIndex;
-
-			while (currentIndex != 0) {
-				randomIndex = Math.floor(Math.random() * currentIndex);
-				currentIndex--;
-				[array[currentIndex], array[randomIndex]] = [
-					array[randomIndex],
-					array[currentIndex],
-				];
-			}
-
-			return array;
-		}
-
-		let numberArr = [1, 2, 3, 4, 5, 6, 0, 7, 8];
-		// let numberArr = [1, 2, 3, 4, 5, 6, 7, 8, 0];
-		let finalState = "[1,2,3,4,5,6,7,8,0]";
 		var AI_moves = 0;
-
-		let checkGameState = (arr) => {
-			debugger;
-			if (JSON.stringify(arr) === finalState) {
-				var points = 0;
-				if (movesTaken <= AI_moves) {
-					points = 100;
-				} else {
-					points = (AI_moves / movesTaken) * 100;
-				}
-				alert(
-					`Wohooo!! You completed the game\nPoints Earned : ${points}`,
-				);
-				reset();
-			}
-		};
-
-		// let checkGameState = (arr) => {
-		//   if (JSON.stringify(arr) === finalState) {
-		//     alert("you Won");
-		//     reset();
-		//   }
-		// };
-
+		var player_moves = 0;
+		movesButton = document.getElementById("moves");
+		function swapTiles(cell1, cell2) {
+			movesButton.innerHTML = "Moves: " + String(player_moves);
+			var temp = document.getElementById(cell1).className;
+			document.getElementById(cell1).className =
+				document.getElementById(cell2).className;
+			document.getElementById(cell2).className = temp;
+		}
 		let checkInversion = (arr) => {
 			let invCount = 0;
 			for (let i = 0; i < arr.length; i++) {
@@ -138,218 +195,123 @@
 			return false;
 		};
 
-		let getRandomIntBetweenRange = (min, max) => {
-			return Math.floor(Math.random(min, max) * (max - min + 1) + min);
-		};
+		function shuffle(boardArr) {
+			//Use nested loops to access each cell of the 3x3 grid
+			board = boardArr.slice();
 
-		while (true) {
-			//   shuffle(numberArr);
-			if (JSON.stringify(numberArr) != finalState) {
-				if (!isSolvable(numberArr)) continue;
-				else {
-					AI_moves = solve8puzzle(numberArr);
-					break;
+			for (var row = 1; row <= 3; row++) {
+				//For each row of the 3x3 grid
+				for (var column = 1; column <= 3; column++) {
+					//For each column in this row
+
+					var row2 = Math.floor(Math.random() * 3 + 1); //Pick a random row from 1 to 3
+					var column2 = Math.floor(Math.random() * 3 + 1); //Pick a random column from 1 to 3
+					var a = (row - 1) * 3 + column;
+					var b = (row2 - 1) * 3 + column2;
+
+					swapTiles("cell" + row + column, "cell" + row2 + column2); //Swap the look & feel of both cells
+
+					temp = board[a - 1];
+					board[a - 1] = board[b - 1];
+					board[b - 1] = temp;
+				}
+			}
+			return board;
+		}
+
+		function getNewBoard() {
+			player_moves = 0;
+			AI_moves = 0;
+			movesButton.innerHTML = "Moves: 0";
+			board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+			newBoard = shuffle(board);
+			while (!isSolvable(newBoard)) {
+				newBoard = shuffle(newBoard);
+			}
+			// newBoardwithZero = newBoard.slice();
+			// for (var i = 0; i < 9; i++) {
+			// 	if (newBoardwithZero[i] == 9) {
+			// 		newBoardwithZero[i] = 0;
+			// 		break;
+			// 	}
+			// }
+			console.log(newBoard);
+			// AI_moves = solve8puzzle(newBoard);
+			console.log(AI_moves);
+		}
+
+		function clickTile(row, column) {
+			var cell = document.getElementById("cell" + row + column);
+			var tile = cell.className;
+			if (tile != "tile9") {
+				//Checking if white tile on the right
+				if (column < 3) {
+					if (
+						document.getElementById("cell" + row + (column + 1))
+							.className == "tile9"
+					) {
+						player_moves += 1;
+						swapTiles(
+							"cell" + row + column,
+							"cell" + row + (column + 1),
+						);
+
+						return;
+					}
+				}
+				//Checking if white tile on the left
+				if (column > 1) {
+					if (
+						document.getElementById("cell" + row + (column - 1))
+							.className == "tile9"
+					) {
+						player_moves += 1;
+						swapTiles(
+							"cell" + row + column,
+							"cell" + row + (column - 1),
+						);
+						return;
+					}
+				}
+				//Checking if white tile is above
+				if (row > 1) {
+					if (
+						document.getElementById("cell" + (row - 1) + column)
+							.className == "tile9"
+					) {
+						player_moves += 1;
+						swapTiles(
+							"cell" + row + column,
+							"cell" + (row - 1) + column,
+						);
+						return;
+					}
+				}
+				//Checking if white tile is below
+				if (row < 3) {
+					if (
+						document.getElementById("cell" + (row + 1) + column)
+							.className == "tile9"
+					) {
+						player_moves += 1;
+						swapTiles(
+							"cell" + row + column,
+							"cell" + (row + 1) + column,
+						);
+						return;
+					}
 				}
 			}
 		}
-
-		let gameArea = document.getElementById("game_area");
-		let gameControls = document.getElementById("game_controls");
-		let gameWinState = false;
-		let movesTaken = 0;
-
-		let renderUi = function (flag) {
-			let initialRender = flag;
-			debugger;
-			if (initialRender) {
-				elementFactory();
-			} else {
-				repaint();
-			}
-		};
-
-		let reset = () => {
-			debugger;
-			movesTaken = 0;
-			var mv = document.getElementById("moves");
-			mv.textContent = `Moves : ${movesTaken}`;
-			let preGameShuffle = shuffle(numberArr);
-			let isGameSolvable = isSolvable(preGameShuffle);
-			if (isGameSolvable) {
-				numberArr = preGameShuffle;
-				gameWinState = false;
-				renderUi(false);
-				// console.log("AI");
-				AI_moves = solve8puzzle(numberArr);
-			} else {
-				reset();
-			}
-		};
-
-		// let reset = () => {
-		//   debugger;
-		//   let preGameShuffle = shuffle(numberArr);
-		//   let isGameSolvable = isSolvable(preGameShuffle);
-		//   if (isGameSolvable) {
-		//     numberArr = preGameShuffle;
-		//   } else {
-		//     reset();
-		//   }
-		//   gameWinState = false;
-		//   renderUi(false);
-		// };
-
-		let elementFactory = function () {
-			//   debugger;
-			let resetButton = document.createElement("button");
-			gameControls.appendChild(resetButton);
-			resetButton.classList.add("reset_btn");
-			resetButton.innerText = "RESET";
-			resetButton.addEventListener("click", reset);
-			for (var i = 0; i < 9; i++) {
-				let number_div = document.createElement("div");
-				gameArea.appendChild(number_div);
-				number_div.classList.add("number-block");
-				number_div.setAttribute("data-number", numberArr[i]);
-				number_div.setAttribute("data-index", i);
-				number_div.innerText = number_div.getAttribute("data-number");
-				number_div.classList.add("number_class");
-				number_div.addEventListener("click", evaluate);
-				if (numberArr[i] === 0) {
-					number_div.classList.add("void_class");
-				}
-			}
-		};
-
-		let repaint = () => {
-			debugger;
-			willRepaintGame
-				.then(function () {
-					let numberBlocks =
-						document.getElementsByClassName("number-block");
-					for (let key in numberBlocks) {
-						if (typeof numberBlocks[key] === "object") {
-							numberBlocks[key].setAttribute(
-								"data-number",
-								numberArr[key],
-							);
-							numberBlocks[key].innerText =
-								numberBlocks[key].getAttribute("data-number");
-							if (
-								numberBlocks[key].classList.contains(
-									"void_class",
-								)
-							) {
-								numberBlocks[key].classList.remove(
-									"void_class",
-								);
-							} else if (numberArr[key] === 0) {
-								numberBlocks[key].classList.add("void_class");
-							}
-						}
-					}
-				})
-				.then(function () {
-					setTimeout(function () {
-						checkGameState(numberArr);
-					}, 100);
-				});
-		};
-
-		let willRepaintGame = new Promise((resolve, reject) => {
-			resolve(); // resolve regardless;
-		});
-
-		let swapFunction = function (temp, arr, i, j) {
-			temp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = temp;
-			temp = null;
-			movesTaken++;
-			var mv = document.getElementById("moves");
-			mv.textContent = `Moves : ${movesTaken}`;
-			return temp, arr;
-		};
-
-		let evaluate = function (e) {
-			let currNumClicked = parseInt(e.target.dataset.number);
-			if (currNumClicked === 0) return false;
-			let temp;
-			let numberState = numberArr;
-			let indexOfNumber = numberState.indexOf(currNumClicked);
-			let voidCases = [2, 3, 5, 6];
-			let targetElementIndex = parseInt(e.target.dataset.index);
-
-			if (voidCases.indexOf(targetElementIndex) >= 0) {
-				if (targetElementIndex === 2 || targetElementIndex === 5) {
-					if (numberState[indexOfNumber + 1] === 0) return false;
-				} else if (
-					targetElementIndex === 3 ||
-					targetElementIndex === 6
-				) {
-					if (numberState[indexOfNumber - 1] === 0) return false;
-				}
-			}
-
-			//if the number clicked is at index 0
-			if (indexOfNumber === 0) {
-				if (numberState[1] === 0) {
-					temp, (numberState = swapFunction(temp, numberState, 1, 0));
-				} else if (numberState[3] === 0) {
-					temp = numberState[3];
-					numberState[3] = numberState[0];
-					numberState[0] = temp;
-					temp = null;
-				}
-			}
-
-			//if the number clicked is at index 1 to 7
-
-			if (indexOfNumber >= 1 && indexOfNumber <= 8) {
-				//check for 0
-				if (numberState[indexOfNumber - 1] === 0) {
-					temp,
-						(numberState = swapFunction(
-							temp,
-							numberState,
-							indexOfNumber - 1,
-							indexOfNumber,
-						));
-				} else if (numberState[indexOfNumber + 1] === 0) {
-					temp,
-						(numberState = swapFunction(
-							temp,
-							numberState,
-							indexOfNumber + 1,
-							indexOfNumber,
-						));
-				} else if (numberState[indexOfNumber + 3] === 0) {
-					temp,
-						(numberState = swapFunction(
-							temp,
-							numberState,
-							indexOfNumber + 3,
-							indexOfNumber,
-						));
-				} else if (numberState[indexOfNumber - 3] === 0) {
-					temp,
-						(numberState = swapFunction(
-							temp,
-							numberState,
-							indexOfNumber - 3,
-							indexOfNumber,
-						));
-				} else {
-					return false;
-				}
-			}
-
-			numberArr = numberState;
-			//check for game State
-			renderUi(false);
-		};
-
-		/* game start */
-		renderUi(true);
 	</script>
+	<script
+		src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"
+	></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+		crossorigin="anonymous"
+	></script>
 </html>
