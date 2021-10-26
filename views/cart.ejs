@@ -22,6 +22,15 @@
   <body>
     <br />
     <div class="container pl-5" style="font-size: 22px">
+      <div class="ml-2 my-3">
+        <a
+          href="/menu"
+          style="font-size: 18px; text-decoration: none; color: gray"
+        >
+          &#8592; Go Back to Menu</a
+        >
+      </div>
+
       <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
       <lord-icon
         src="https://cdn.lordicon.com//dxjqoygy.json"
@@ -30,7 +39,7 @@
         style="width: 100px; height: 100px"
       >
       </lord-icon>
-      <a href="/store" style="text-decoration: none; color: black">
+      <a href="" style="text-decoration: none; color: black">
         Order with
         <b>Dyce&Dyne<span style="color: rgb(255, 187, 0)">.</span> </b></a
       >
@@ -39,7 +48,7 @@
     <% if(items.length == 0) { %>
     <div class="container mx-auto px-auto" style="text-align: center">
       <div style="font-size: x-large; color: orangered">Your cart is empty</div>
-      <small>Your smallest contribution could change someone's life!</small>
+      <small>Go to Menu and add something you wish to order.</small>
       <br /><br />
       <div class="container flash-container">
         <% if(error && error.length > 0 ) { %>
@@ -81,7 +90,7 @@
         <% } %>
       </div>
       <div class="my-4">
-        <a i class="btn btn-sm btn-outline-success" href="/store">STORE</a>
+        <a i class="btn btn-sm btn-outline-success" href="/menu">MENU</a>
       </div>
     </div>
     <% } else { %>
@@ -186,7 +195,7 @@
         </div>
       </div>
       <br />
-      <a href="/order" class="my-3 btn btn-outline-success btn-lg rounded-2">
+      <a href="/ordercod" class="my-3 btn btn-outline-success btn-lg rounded-2">
         <b> Proceed To Payment via Cash on Delivery </b>
         <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
         <lord-icon
@@ -203,7 +212,7 @@
         href="/ordercard"
         class="my-3 btn btn-outline-success btn-lg rounded-2"
       >
-        <b> Proceed To Payment via Credit Card </b>
+        <b> Proceed To Online Mode of Payment</b>
         <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
         <lord-icon
           src="https://cdn.lordicon.com//vaeagfzc.json"
