@@ -189,7 +189,7 @@ class Solver {
 		board[a + 1][b] = temp;
 		var newState = new BoardState(
 			flatten(board),
-			"Up",
+			"Down",
 			[state.pos[0] + 1, state.pos[1]],
 			state.moves + 1,
 			state,
@@ -208,7 +208,7 @@ class Solver {
 		board[a][b - 1] = temp;
 		var newState = new BoardState(
 			flatten(board),
-			"Up",
+			"Left",
 			[state.pos[0], state.pos[1] - 1],
 			state.moves + 1,
 			state,
@@ -227,7 +227,7 @@ class Solver {
 		board[a][b + 1] = temp;
 		var newState = new BoardState(
 			flatten(board),
-			"Up",
+			"Right",
 			[state.pos[0], state.pos[1] + 1],
 			state.moves + 1,
 			state,
@@ -242,6 +242,7 @@ class Solver {
 			this.path.push(node.parentMove);
 			node = node.parent;
 		}
+		console.log(this.path);
 		return moves;
 	}
 }
