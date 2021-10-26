@@ -327,10 +327,17 @@ app.get("/profile", isLoggedIn, function (req, res) {
 			return res.redirect("back");
 		} else {
 			var orders = foundUser.orders;
+			orders.sort(function (a, b) {
+				return new Date(b.date) - new Date(a.date);
+			});
 
 			res.render("profile", { orders: orders });
 		}
 	});
+});
+
+app.get("/8puzzle", isLoggedIn, function (req, res) {
+	res.render("8puzzle");
 });
 
 app.get("/ordercard", isLoggedIn, function (req, res) {

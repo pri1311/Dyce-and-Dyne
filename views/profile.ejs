@@ -18,14 +18,15 @@
 		/>
 		<title>Dyce&Dyne | Cart | <%= currentUser.name %></title>
 		<style>
-			/*
-*
-* ==========================================
-* CUSTOM UTIL CLASSES
-* ==========================================
-*
-*/
+			.primaryColor {
+				background-color: #ffb400;
+			}
 
+			.gameButton,
+			.gameButton:active {
+				border: none;
+				outline: none;
+			}
 			/* Timeline holder */
 			ul.timeline {
 				list-style-type: none;
@@ -36,7 +37,7 @@
 			/* Timeline vertical line */
 			ul.timeline:before {
 				content: " ";
-				background: #000;
+				background: #ffb400;
 				display: inline-block;
 				position: absolute;
 				left: 16px;
@@ -53,7 +54,7 @@
 			/* Timeline item arrow */
 			.timeline-arrow {
 				border-top: 0.5rem solid transparent;
-				border-right: 0.5rem solid #000;
+				border-right: 0.5rem solid #ffb400;
 				border-bottom: 0.5rem solid transparent;
 				display: block;
 				position: absolute;
@@ -63,11 +64,11 @@
 			/* Timeline item circle marker */
 			li.timeline-item::before {
 				content: " ";
-				background: #ddd;
+				background: #fff;
 				display: inline-block;
 				position: absolute;
 				border-radius: 50%;
-				border: 3px solid #000;
+				border: 3px solid #ffb400;
 				left: 11px;
 				width: 14px;
 				height: 14px;
@@ -82,131 +83,7 @@
 	</head>
 
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-light">
-			<br />
-			<div class="container">
-				<a
-					class="navbar-brand link-navbar"
-					href="/"
-					style="font-weight: 900; font-size: xx-large; color: white"
-					>Aid<span style="color: #ffb400">.</span></a
-				>
-				<button
-					class="navbar-toggler"
-					type="button"
-					data-toggle="collapse"
-					data-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div
-					class="collapse navbar-collapse"
-					id="navbarSupportedContent"
-				>
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item dropdown">
-							<a
-								class="nav-link dropdown-toggle link-navbar"
-								href="#"
-								id="navbarDropdown"
-								role="button"
-								data-toggle="dropdown"
-								aria-haspopup="true"
-								aria-expanded="false"
-							>
-								<i>Get Involved</i>
-							</a>
-							<div
-								class="dropdown-menu"
-								aria-labelledby="navbarDropdown"
-							>
-								<a
-									class="dropdown-item link-navbar"
-									href="/donate"
-									>Donate</a
-								>
-								<a
-									class="dropdown-item link-navbar"
-									href="/volunteer"
-									>Volunteer</a
-								>
-								<a
-									class="dropdown-item link-navbar"
-									href="/store"
-									>Give by Shopping</a
-								>
-							</div>
-						</li>
-						<li class="nav-item">
-							<a
-								class="nav-link link-navbar"
-								href="/causes&stories"
-								>Causes and Stories |</a
-							>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link link-navbar" href="/store"
-								>Store |</a
-							>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link link-navbar" href="/events"
-								>Events |</a
-							>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link link-navbar" href="/aboutus"
-								>About Us |</a
-							>
-						</li>
-						<% if(!currentUser) {%>
-						<li class="nav-item">
-							<a class="nav-link link-navbar" href="/login"
-								>Login |</a
-							>
-						</li>
-						<% } else { %>
-						<li class="nav-item dropdown">
-							<a
-								class="nav-link dropdown-toggle link-navbar"
-								href="#"
-								id="navbarDropdown"
-								role="button"
-								data-toggle="dropdown"
-								aria-haspopup="true"
-								aria-expanded="false"
-							>
-								<i> <%= currentUser.name %> </i>
-							</a>
-							<div
-								class="dropdown-menu"
-								aria-labelledby="navbarDropdown"
-							>
-								<a
-									class="dropdown-item link-navbar"
-									href="/profile"
-									>Profile</a
-								>
-								<a
-									class="dropdown-item link-navbar"
-									href="/cart"
-									>Cart</a
-								>
-								<a
-									class="dropdown-item link-navbar"
-									href="/logout"
-									>Logout</a
-								>
-							</div>
-						</li>
-						<% } %>
-					</ul>
-				</div>
-			</div>
-		</nav>
+		<%- include('../partials/navbar.ejs') %>.
 		<div class="container row d-flex justify-content-center m-auto">
 			<div class="col-lg-4 col-sm-6">
 				<div class="col-12">
@@ -228,12 +105,17 @@
 						</svg>
 
 						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
+							<h5 class="card-title">8 Puzzle</h5>
 							<p class="card-text">
-								This card has supporting text below as a natural
-								lead-in to additional content.
+								Artfully headaches! The pieces are to be pushed
+								around over the board until the picture is
+								complete.
 							</p>
-							<a href="#" class="btn btn-primary">Play!</a>
+							<a
+								href="/8puzzle"
+								class="btn btn-primary primaryColor gameButton"
+								>Play!</a
+							>
 						</div>
 					</div>
 				</div>
@@ -256,43 +138,40 @@
 						</svg>
 
 						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
+							<h5 class="card-title">Invaderz</h5>
 							<p class="card-text">
-								This card has supporting text below as a natural
-								lead-in to additional content.
+								You are the last hope of the human kind as the
+								defense against the InvaderZ. They are deployed
+								by their mothership with the sole purpose of
+								entering earth's atmosphere.
 							</p>
-							<a href="#" class="btn btn-primary">Play!</a>
+							<a
+								href="#"
+								class="btn btn-primary primaryColor gameButton"
+								>Play!</a
+							>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-8 col-sm-6">
-				<!-- <div class="card">
-					<h5 class="card-header"><%= currentUser.name %></h5>
-					<div class="card-body">
-						<h5 class="card-title">
-							Wallet Points: <%= currentUser.wallet %> points
-						</h5>
-						<p class="card-text">
-							Total Orders: <%= currentUser.orders.length %>
-						</p>
-					</div>
-				</div> -->
-				<div class="container py-5">
-					<div class="text-center mb-3">
+				<div class="container">
+					<div class="text-center mb-0">
 						<div class="col-lg-8 mx-auto">
-							<h1 class="display-4"><%= currentUser.name %></h1>
+							<h1 class="display-4" style="color: #ffb400">
+								<%= currentUser.name %>
+							</h1>
 							<p class="lead mb-0">
 								Wallet Points: <%= currentUser.wallet %> points
 							</p>
 							<p class="lead">
 								Total Orders: <%= currentUser.orders.length %>
 							</p>
-							<p class="lead">Order History:</p>
+							<p class="lead mb-0">Order History:</p>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="row mt-0">
 						<div class="col-lg-12 mx-auto">
 							<!-- Timeline -->
 							<ul class="timeline">
@@ -316,8 +195,7 @@
 										<%= orders[i].date %>
 									</h3>
 									<span class="small text-gray"
-										><i class="fa fa-clock-o mr-1"></i>Order
-										total: INR <%= orders[i].total %>
+										>Order total: INR <%= orders[i].total %>
 									</span>
 									<p
 										class="
