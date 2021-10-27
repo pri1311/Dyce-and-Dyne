@@ -15,6 +15,7 @@ var userSchema = new mongoose.Schema({
     amountPayable: Number,
     discountApplied: Number,
   },
+  isCustomer: Boolean,
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameUnique: false });

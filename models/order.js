@@ -15,6 +15,7 @@ var orderSchema = new mongoose.Schema({
     fullAddress: String,
   },
   paymentMode: String,
+  isDelivered: Boolean,
 });
 
 module.exports = mongoose.model("Order", orderSchema);
