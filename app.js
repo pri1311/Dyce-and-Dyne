@@ -23,6 +23,7 @@ const instance = new Razorpay({
 const User = require("./models/user");
 const FoodItem = require("./models/foodItem");
 const Order = require("./models/order");
+// const DeliveryBoy = require("./models/deliveryBoy");
 
 mongoose.connect(
   "mongodb+srv://admin:admin@cluster0.o8tac.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -330,7 +331,7 @@ app.get("/menu", isLoggedIn, (req, res) => {
   FoodItem.find(function (err, allItems) {
     if (err) {
       console.log(err);
-      res.redirect("/");
+      res.redirect("/home");
     } else {
       res.render("menu", { allItems: allItems });
     }
@@ -619,7 +620,7 @@ app.post("/login", function (req, res, next) {
           return next(err);
         }
         req.flash("success", "Welcome back " + user.name);
-        return res.redirect("/");
+        return res.redirect("/home");
       });
     }
   )(req, res, next);
@@ -662,7 +663,7 @@ app.post("/signup", function (req, res) {
     } else {
       passport.authenticate("local")(req, res, function () {
         req.flash("success", "Welcome to Dyce & Dyne " + user.name);
-        res.redirect("/");
+        res.redirect("/home");
       });
     }
   });
@@ -683,6 +684,15 @@ function isLoggedIn(req, res, next) {
     res.redirect("/login");
   }
 }
+
+// function isDeliveryManLoggedIn(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   } else {
+//     req.flash("error", "This Page can only be accessed by a Delivery Man");
+//     res.redirect("/login");
+//   }
+// }
 
 app.listen(3000, () => {
   console.log("Serving on port 3000");
