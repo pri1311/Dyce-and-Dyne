@@ -23,7 +23,6 @@ const instance = new Razorpay({
 const User = require("./models/user");
 const FoodItem = require("./models/foodItem");
 const Order = require("./models/order");
-// const DeliveryBoy = require("./models/deliveryBoy");
 
 mongoose.connect(
 	"mongodb+srv://admin:admin@cluster0.o8tac.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -295,7 +294,7 @@ app.get("/tsp/:deliveryNo", async function (req, res) {
 	});
 });
 
-app.get("/delivery", function (req, res) {
+app.get("/delivery", isDeliveryAgentLoggedIn, function (req, res) {
 	var currdt = Date.now();
 	Order.find({}, function (err, allOrders) {
 		if (err) console.log(err);
@@ -332,10 +331,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", isLoggedIn, (req, res) => {
-	res.render("home");
+	res.render("index");
 });
 
-app.get("/menu", isLoggedIn, (req, res) => {
+app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
 		if (err) {
 			console.log(err);
@@ -561,6 +560,7 @@ app.post("/afterOrderPlaced", (req, res) => {
 						fullAddress: inputAddress,
 					},
 					paymentMode: req.body.paymentMode,
+					isDelivered: false,
 				});
 				Order.create(new_order, function (err, order) {
 					if (err) {
@@ -614,10 +614,6 @@ app.get("/login", function (req, res) {
 	res.render("login");
 });
 
-app.get("/signup", function (req, res) {
-	res.render("signup");
-});
-
 app.post("/login", function (req, res, next) {
 	passport.authenticate(
 		"local",
@@ -635,6 +631,10 @@ app.post("/login", function (req, res, next) {
 				req.flash("error", "Password or Email does not match");
 				return res.redirect("/login");
 			}
+			if (user.isCustomer == false) {
+				req.flash("error", "Please login via Delivery Agent Portal");
+				return res.redirect("/deliverylogin");
+			}
 			req.logIn(user, function (err) {
 				if (err) {
 					return next(err);
@@ -646,12 +646,17 @@ app.post("/login", function (req, res, next) {
 	)(req, res, next);
 });
 
+app.get("/signup", function (req, res) {
+	res.render("signup");
+});
+
 app.post("/signup", function (req, res) {
 	console.log(req.body);
 	var newUser = new User({
 		username: req.body.username,
 		name: req.body.name,
 		phone: req.body.phone,
+		isCustomer: true,
 	});
 	var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
 	var addressObj = {
@@ -690,6 +695,94 @@ app.post("/signup", function (req, res) {
 	});
 });
 
+app.get("/deliverylogin", function (req, res) {
+	res.render("deliverylogin");
+});
+
+app.post("/deliverylogin", function (req, res, next) {
+	passport.authenticate(
+		"local",
+		{
+			successRedirect: "/",
+			failureRedirect: "/deliverylogin",
+			failureFlash: true,
+			succssFlash: true,
+		},
+		function (err, user) {
+			// console.log(req.user);
+			// console.log(user);
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				req.flash("error", "Password or Email does not match");
+				return res.redirect("/deliverylogin");
+			}
+			if (user.isCustomer == true) {
+				req.flash("error", "Please login via Customer Portal");
+				return res.redirect("/login");
+			}
+			req.logIn(user, function (err) {
+				if (err) {
+					return next(err);
+				}
+				// console.log(" ----- req.user -----");
+				// console.log(req.user);
+				req.flash("success", "Welcome back " + user.name);
+				return res.redirect("/delivery");
+			});
+		},
+	)(req, res, next);
+});
+
+app.get("/deliverysignup", function (req, res) {
+	res.render("deliverysignup");
+});
+
+app.post("/deliverysignup", function (req, res) {
+	var newDeliveryAgent = new User({
+		username: req.body.username,
+		name: req.body.name,
+		phone: req.body.phone,
+		isCustomer: false,
+	});
+	var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
+	var addressObj = {
+		fullAddress: inputAddress,
+		flatwing: req.body.flatwing,
+		locality: req.body.locality,
+		pincode: req.body.pincode,
+		city: req.body.city,
+	};
+	newDeliveryAgent.addresses.push(addressObj);
+	User.register(newDeliveryAgent, req.body.password, function (err, user) {
+		if (err) {
+			console.log(err);
+			if (
+				err.message ==
+				"A user with the given username is already registered"
+			) {
+				req.flash(
+					"error",
+					"A delivery agent with the given Email Id is already registered",
+				);
+				return res.redirect("/deliverysignup");
+			} else {
+				req.flash(
+					"error",
+					"A delivery agent with the given Phone No. is already registered",
+				);
+				return res.redirect("/deliverysignup");
+			}
+		} else {
+			passport.authenticate("local")(req, res, function () {
+				req.flash("success", "Welcome to Dyce & Dyne " + user.name);
+				res.redirect("/delivery");
+			});
+		}
+	});
+});
+
 app.get("/logout", function (req, res) {
 	req.logout();
 	req.flash("success", "Logged you out!");
@@ -706,14 +799,22 @@ function isLoggedIn(req, res, next) {
 	}
 }
 
-// function isDeliveryManLoggedIn(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   } else {
-//     req.flash("error", "This Page can only be accessed by a Delivery Man");
-//     res.redirect("/login");
-//   }
-// }
+function isDeliveryAgentLoggedIn(req, res, next) {
+	if (req.isAuthenticated()) {
+		if (!req.user.isCustomer) {
+			return next();
+		} else {
+			req.flash(
+				"error",
+				"This Page can only be accessed by a Delivery Agent",
+			);
+			res.redirect("/deliverylogin");
+		}
+	} else {
+		req.flash("error", "You need to be logged in to do that.");
+		res.redirect("/deliverylogin");
+	}
+}
 
 app.listen(3000, () => {
 	console.log("Serving on port 3000");
