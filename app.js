@@ -469,7 +469,7 @@ app.get("/profile", isLoggedIn, function (req, res) {
 	});
 });
 
-app.get("/8puzzle", isLoggedIn, function (req, res) {
+app.get("/8puzzle", function (req, res) {
 	res.render("8puzzle");
 });
 
