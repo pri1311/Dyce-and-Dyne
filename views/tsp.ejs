@@ -44,10 +44,14 @@
 
             #map {
                 position: absolute;
-                top: 30;
+                top: 80;
                 bottom: 0;
-                width: 100%;
-                height:85%;
+                width: 85%;
+                height: 75%;
+                border: 1px solid black;
+                margin-left: 130px;
+                margin-bottom: 20px;
+                border-radius: 20px;
             }
 
             .card {
@@ -91,11 +95,33 @@
     </head>
 
     <body>
-        <div>Your Route is:</div>
-        <% order.forEach(location=>{ %>
-            <span><%= location %> -></span>
-        <% }) %>
+        <div class="container" style="border: 2px solid grey; border-radius: 20px">
+            <br />
+            <div
+                class="text-center"
+                style="
+                    background-color: rgb(255, 174, 0);
+                    border: 3px solid black;
+                    border-radius: 20px;
+                "
+            >
+                DEVLIVERY ID: 548953895
+            </div>
+            <div>
+                Your Route: 
+                <br />
+                <small style="font-weight: bold;">Dyce and Dyne ~~> </small>
+                <% order.forEach(location=>{ %>
+                <small style="font-weight: bold;"><%= location %> ~~> </small>
+                <% }) %>
+                <small style="font-weight: bold;">Dyce and Dyne.</small>
+            </div>
+            <small>Please follow the route shown on the screen for faster delivery.</small>
+            <small>Please Obey Traffic Rules.</small>
+        </div>
+
         <div id="map"></div>
+
         <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -112,40 +138,29 @@
             crossorigin="anonymous"
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        
+
         <script>
-           
-            /*var truckLocation = [72.842812, 19.21558];
-            var warehouseLocation = [
-                [72.845812, 19.21568],
-                [72.855673, 19.24558],
-                [72.852912, 19.25558],
-            ];*/
-            var address=<%-JSON.stringify(order)%>
-            var warehouseLocation=<%-JSON.stringify(warehouseLocation)%>
-            var truckLocation=warehouseLocation[0];
+
+
             
-            
-            console.log(warehouseLocation)
-            //const warehouseLocation = [72.855673,19.184196];
-            const lastAtRestaurant = 0;
-            
-            const pointHopper = {};
 
             // Add your access token
-            mapboxgl.accessToken =
-                "pk.eyJ1IjoiYmhhdnlhMDkyIiwiYSI6ImNrb2xlNWUzbjFiNjAydnE0bXpsbG13MGcifQ.jik4Q9NnhmABl1qhYKt7ZA";
+            mapboxgl.accessToken ="pk.eyJ1IjoiYmhhdnlhMDkyIiwiYSI6ImNrb2xlNWUzbjFiNjAydnE0bXpsbG13MGcifQ.jik4Q9NnhmABl1qhYKt7ZA";
+            const DDL=[72.84167,19.21333];
 
             // Initialize a map
             const map = new mapboxgl.Map({
                 container: "map", // container id
                 style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-                center: truckLocation, // starting position
+                center: DDL, // starting position
                 zoom: 12, // starting zoom
 
             });
+
             
-             const directions = new MapboxDirections({
+
+            
+            const directions = new MapboxDirections({
                 accessToken: mapboxgl.accessToken,
                 unit: "metric",
                 steps: true,
@@ -154,19 +169,50 @@
                 controls: { instructions: true, profileSwitcher: false },
                 congestion: true,
                 voice_instructions:true,
-                roundtrip:true,
-               // waypoints:'72.842812,19.21558;72.845812,19.21568;72.855673,19.24558;72.852912,19.25558;72.842812,19.21558'
+
             });
             map.addControl(directions, 'top-right');
 
-            const warehouse = turf.featureCollection([turf.multiPoint(warehouseLocation)]);
-            const dropoffs = turf.featureCollection([]);
-            const nothing = turf.featureCollection([]);
+            
 
             map.on("load", async () => {
-                const marker = document.createElement("div");
-                marker.classList = "truck";
-                new mapboxgl.Marker(marker).setLngLat(truckLocation).addTo(map);
+                var address=<%-JSON.stringify(order)%>;
+                var coordinates=<%-JSON.stringify(cords)%>;
+                const DDL=[72.84167,19.21333];
+                console.log(coordinates);
+                const lastAtRestaurant = 0;
+                const pointHopper = {};
+
+                const warehouse = turf.featureCollection([turf.multiPoint(coordinates)]);
+                const dropoffs = turf.featureCollection([]);
+                const nothing = turf.featureCollection([]);
+
+                for(var i=0;i<coordinates.length;i++)
+                {
+                    const el = document.createElement('div');
+                    el.className = 'marker';
+
+                                new mapboxgl.Marker({color:'#ff0000'})
+                                .setLngLat(coordinates[i])
+                                .setPopup(
+                                new mapboxgl.Popup({ offset: 25 }) // add popups
+                                    .setHTML(
+                                    `<h3>${i+2}</h3><p>${address[i]}</p>`
+                                    )
+                                )
+                                .addTo(map);
+                }
+                const el = document.createElement('div');
+                el.className = 'marker';
+
+                new mapboxgl.Marker().setLngLat(DDL).setPopup
+                (
+                    new mapboxgl.Popup({ offset: 25 }).setHTML(
+                            `<h3>1</h3><p>DYCE AND DYNE</p>`
+                    )
+                ).addTo(map);
+
+
                 map.addLayer({
                     id: "warehouse",
                     type: "circle",
@@ -174,13 +220,7 @@
                         data: warehouse,
                         type: "geojson",
                     },
-                    
-                    paint: {
-                        "circle-radius": 8,
-                        "circle-color": "white",
-                        "circle-stroke-color": "#FF0000",
-                        "circle-stroke-width": 3,
-                    },
+
                 });
                 map.addLayer({
                     id: "warehouse-symbol",
@@ -189,22 +229,8 @@
                         data: warehouse,
                         type: "geojson",
                     },
-                    layout: {
-                        "icon-anchor":'top',
-                        'icon-text-fit':'both',
-                        'icon-text-fit-padding':[2,2,2,2],
-                        
-                        "icon-size": 1,
-                        'text-field':'Node',
-                        'text-offset':[0,1],
-                        
-                    },
-                    paint: {
-                        
-                    },
-                });
-                
 
+                });
                 map.addSource("route", {
                     type: "geojson",
                     data: nothing,
@@ -255,20 +281,14 @@
                     },
                     "natural-line-label"
                 );
-                
+
                 newDropoff();
             });
 
 
-            async function newDropoff(
-
-            ) {
+            async function newDropoff() {
                 const query = await fetch(assembleQueryURL(), { method: "GET" });
                 const { code, message, trips, waypoints } = await query.json();
-                console.log(code);
-                console.log(trips);
-
-                // Create an alert for any requests that return an error
                 if (code !== "Ok") {
                     const handleMessage =
                         code === "InvalidInput"
@@ -286,13 +306,14 @@
                 map.getSource("route").setData(routeGeoJSON);
             }
 
-           
+
             function assembleQueryURL() {
-                const coordinates = [truckLocation,...warehouseLocation, truckLocation];
+                var coordinates=<%-JSON.stringify(cords)%>;
+                const allCoordinates = [DDL,...coordinates, DDL];
                 const distributions=[]
-                
+
                 console.log(
-                    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(
+                    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${allCoordinates.join(
                         ";"
                     )}?distributions=${distributions.join(
                         ";"
@@ -300,8 +321,8 @@
                         mapboxgl.accessToken
                     }`
                 );
-                
-                return `https://api.mapbox.com/optimized-trips/v1/mapbox/driving-traffic/${coordinates.join(
+
+                return `https://api.mapbox.com/optimized-trips/v1/mapbox/driving-traffic/${allCoordinates.join(
                     ";"
                 )}?distributions=${distributions.join(
                     ";"
