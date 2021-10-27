@@ -330,15 +330,12 @@ app.get("/", (req, res) => {
 	res.render("index");
 });
 
-app.get("/home", isLoggedIn, (req, res) => {
-	res.render("index");
-});
 
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
 		if (err) {
 			console.log(err);
-			res.redirect("/home");
+			res.redirect("/");
 		} else {
 			res.render("menu", { allItems: allItems });
 		}
@@ -594,7 +591,8 @@ app.post("/afterOrderPlaced", (req, res) => {
 						founduser.cart.amountPayable = 0;
 						founduser.cart.discountApplied = 0;
 						founduser.save();
-						res.send({ status: "OK" });
+						console.log(new_order._id)
+						res.send({ status: "OK", orderid: new_order._id });
 					}
 				});
 			}
@@ -604,8 +602,16 @@ app.post("/afterOrderPlaced", (req, res) => {
 	}
 });
 
-app.get("/orderconfirmed", isLoggedIn, (req, res) => {
-	res.render("orderconfirmed");
+app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
+	Order.find({_id: req.params.orderID}, (err,foundOrder)=> {
+		if(err) console.log(err)
+		else {
+			console.log(foundOrder)
+			var id = foundOrder[0]._id.toString().substring(0, 8);
+			res.render("orderconfirmed", {order: foundOrder[0],orderid : id });
+
+		}
+	})
 });
 
 //-----------------------------AUTH--------------------------------------
@@ -640,7 +646,7 @@ app.post("/login", function (req, res, next) {
 					return next(err);
 				}
 				req.flash("success", "Welcome back " + user.name);
-				return res.redirect("/home");
+				return res.redirect("/");
 			});
 		},
 	)(req, res, next);
@@ -689,7 +695,7 @@ app.post("/signup", function (req, res) {
 		} else {
 			passport.authenticate("local")(req, res, function () {
 				req.flash("success", "Welcome to Dyce & Dyne " + user.name);
-				res.redirect("/home");
+				res.redirect("/");
 			});
 		}
 	});

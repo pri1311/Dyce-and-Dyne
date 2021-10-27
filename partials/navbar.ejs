@@ -1,75 +1,67 @@
-<nav class="navbar navbar-expand-lg navbar-light">
-	<br />
-	<div class="container">
-		<a
-			class="navbar-brand link-navbar"
-			href="/"
-			style="font-weight: 900; font-size: xx-large; color: white"
-			><img
-				height="50"
-				src="https://i.ibb.co/4myjK7k/Screenshot-450.png"
-				alt=""
-		/></a>
-		<button
-			class="navbar-toggler"
-			type="button"
-			data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent"
-			aria-expanded="false"
-			aria-label="Toggle navigation"
-		>
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link link-navbar" href="/causes&stories"
-						>Causes and Stories |</a
-					>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link link-navbar" href="/menu">Store |</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link link-navbar" href="/events">Events |</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link link-navbar" href="/aboutus"
-						>About Us |</a
-					>
-				</li>
-				<% if(!currentUser) {%>
-				<li class="nav-item">
-					<a class="nav-link link-navbar" href="/login">Login |</a>
-				</li>
-				<% } else { %>
-				<li class="nav-item dropdown">
-					<a
-						class="nav-link dropdown-toggle link-navbar"
-						href="#"
-						id="navbarDropdown"
-						role="button"
-						data-toggle="dropdown"
-						aria-haspopup="true"
-						aria-expanded="false"
-					>
-						<i> <%= currentUser.name %> </i>
-					</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item link-navbar" href="/profile"
-							>Profile</a
-						>
-						<a class="dropdown-item link-navbar" href="/cart"
-							>Cart</a
-						>
-						<a class="dropdown-item link-navbar" href="/logout"
-							>Logout</a
-						>
-					</div>
-				</li>
-				<% } %>
-			</ul>
-		</div>
-	</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+	  <br />
+  <div class="container">
+    <a
+      class="navbar-brand link-navbar "
+      href="/"
+      style="font-weight: 900; font-size: xx-large; color: white"
+      ><img
+        height="50"
+        src="https://i.ibb.co/4myjK7k/Screenshot-450.png"
+        alt=""
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/causes&stories"
+            >Causes and Stories |</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/menu">Store |</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/events">Events |</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/#aboutus">About Us |</a>
+        </li>
+        <% if(!currentUser) {%>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/login">Login |</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle link-navbar"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i> <%= currentUser.name %> </i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item link-navbar" href="/profile">Profile</a>
+            <a class="dropdown-item link-navbar" href="/cart">Cart</a>
+            <a class="dropdown-item link-navbar" href="/logout">Logout</a>
+          </div>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
 </nav>
