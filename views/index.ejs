@@ -5,6 +5,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>Dyce & Dyne</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
 
 		<link
 			rel="stylesheet"
@@ -18,15 +24,18 @@
 		<div class="main-wrapper">
 			<div style="background-color: white" class="nav-background">
 				<div class="mobile-logo">
-					<img style="width: 430px" src="./images/logo.png" alt="" />
+					<img style="width: 120px" src="./images/logo.png" alt="" />
 				</div>
 				<div class="mobile-nav">
 					<div class="nav-top">
 						<ul>
 							<% if(currentUser) { %>
-							<li style="font-size: 32px">
+							<li style="font-size: 28px">
 								<a style="font-weight: 700" href="/"
-									>Hey, <%= currentUser.name %></a
+									>Hey,
+									<span style="color: #eebf00"
+										><%= currentUser.name %></span
+									></a
 								>
 							</li>
 							<li>
@@ -570,7 +579,7 @@
 							<h1 class="section-heading text-pure">
 								Big Deals of the Week
 							</h1>
-							<div class="timer">
+							<div class="timer row d-flex">
 								<div>
 									<span>100%</span>
 									<span>Quality Assurance</span>
@@ -710,8 +719,8 @@
 						</div>
 					</section>
 
-					<section class="contact-us flex">
-						<div class="contact-info-wrapper">
+					<section class="contact-us flex d-flex row">
+						<div class="contact-info-wrapper col-lg-6 col-sm-12">
 							<h1 class="section-heading">Contact us</h1>
 							<div class="contact-info">
 								<div>
@@ -719,14 +728,14 @@
 										<img src="./icons/phone-2.svg" alt="" />
 										<div>
 											<span>Call us:</span>
-											<span>(+84) 123 456 789</span>
+											<span>(+91) 900 000 0000</span>
 										</div>
 									</div>
 									<div>
 										<img src="./icons/bag-2.svg" alt="" />
 										<div>
 											<span>E-mail ::</span>
-											<span>support@Dyce & Dyne.com</span>
+											<span>support@Dyce&Dyne.com</span>
 										</div>
 									</div>
 									<div>
@@ -742,7 +751,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="map">
+						<div class="map col-lg-6 col-sm-12">
 							<iframe
 								src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7198.685490749466!2d72.8410088852966!3d19.215729905825974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDEyJzQ4LjQiTiA3MsKwNTAnMzAuNSJF!5e0!3m2!1sen!2sin!4v1635320404930!5m2!1sen!2sin"
 								width="600"
