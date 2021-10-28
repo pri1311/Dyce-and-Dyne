@@ -211,7 +211,7 @@ const _addressToLatLng = async (address) => {
 
 app.get("/tsp/:deliveryNo", async function (req, res) {
 	var currdt = Date.now();
-	Order.find({isDelivered:false}, async function (err, allOrders) {
+	Order.find({ isDelivered: false }, async function (err, allOrders) {
 		if (err) console.log(err);
 		else {
 			// var map = {};
@@ -233,31 +233,25 @@ app.get("/tsp/:deliveryNo", async function (req, res) {
 			// 	schedule.push(temp);
 			// }
 			var map = {};
-			var schedule=[];
-			for(var i=0;i<allOrders.length;i++)
-			{
-				var currdt= allOrders[i].date;
-				var temp=[];
+			var schedule = [];
+			for (var i = 0; i < allOrders.length; i++) {
+				var currdt = allOrders[i].date;
+				var temp = [];
 				temp.push(allOrders[i]);
-				for(var j=i+1;j<allOrders.length;j++)
-				{
-					var diff= allOrders[j].date-currdt;
-					diff=diff/1000;
-					if(diff<=1200)
-					{
+				for (var j = i + 1; j < allOrders.length; j++) {
+					var diff = allOrders[j].date - currdt;
+					diff = diff / 1000;
+					if (diff <= 1200) {
 						i++;
 						temp.push(allOrders[j]);
-					}
-					else
-						break;	
+					} else break;
 				}
 				schedule.push(temp);
 			}
-			for(var k=0;k<schedule.length;k++)
-			{
-				for(var j=0;j<schedule[k].length;j++)
-					console.log(schedule[k][j]['total']);
-				console.log()
+			for (var k = 0; k < schedule.length; k++) {
+				for (var j = 0; j < schedule[k].length; j++)
+					console.log(schedule[k][j]["total"]);
+				console.log();
 			}
 			var allOrders = schedule[req.params.deliveryNo];
 
@@ -316,34 +310,33 @@ app.get("/tsp/:deliveryNo", async function (req, res) {
 					CORDINATES[bestTour[i]].latitude,
 				]);
 			}
-			res.render("tsp.ejs", { cords: cords, order: location , schedule:allOrders, tspno : req.params.deliveryNo });
+			res.render("tsp.ejs", {
+				cords: cords,
+				order: location,
+				schedule: allOrders,
+				tspno: req.params.deliveryNo,
+			});
 		}
-	}).sort({date:1});
+	}).sort({ date: 1 });
 });
 
-app.get("/delivery",  function (req, res) {
-	
-	Order.find({isDelivered:false}, function (err, allOrders) {
+app.get("/delivery", function (req, res) {
+	Order.find({ isDelivered: false }, function (err, allOrders) {
 		if (err) console.log(err);
 		else {
 			var map = {};
-			var schedule=[];
-			for(var i=0;i<allOrders.length;i++)
-			{
-				var currdt= allOrders[i].date;
-				var temp=[];
+			var schedule = [];
+			for (var i = 0; i < allOrders.length; i++) {
+				var currdt = allOrders[i].date;
+				var temp = [];
 				temp.push(allOrders[i]);
-				for(var j=i+1;j<allOrders.length;j++)
-				{
-					var diff= allOrders[j].date-currdt;
-					diff=diff/1000;
-					if(diff<=1200)
-					{
+				for (var j = i + 1; j < allOrders.length; j++) {
+					var diff = allOrders[j].date - currdt;
+					diff = diff / 1000;
+					if (diff <= 1200) {
 						i++;
 						temp.push(allOrders[j]);
-					}
-					else
-						break;	
+					} else break;
 				}
 				schedule.push(temp);
 			}
@@ -367,51 +360,42 @@ app.get("/delivery",  function (req, res) {
 			// 	cost.push(sum);
 			// 	schedule.push(temp);
 			// }
-			var cost=[];
-			for(var i=0;i<schedule.length;i++)
-			{
-				var sum=0;
-				for(var j=0;j<schedule[i].length;j++)
-					sum=sum+schedule[i][j].total;
+			var cost = [];
+			for (var i = 0; i < schedule.length; i++) {
+				var sum = 0;
+				for (var j = 0; j < schedule[i].length; j++)
+					sum = sum + schedule[i][j].total;
 				cost.push(sum);
 			}
-			for(var k=0;k<schedule.length;k++)
-			{
-				for(var j=0;j<schedule[k].length;j++)
-					console.log(schedule[k][j]['total']);
-				console.log()
+			for (var k = 0; k < schedule.length; k++) {
+				for (var j = 0; j < schedule[k].length; j++)
+					console.log(schedule[k][j]["total"]);
+				console.log();
 			}
-				
+
 			//res.send(schedule);
 			res.render("delivery", { schedule: schedule, cost: cost });
 		}
-	}).sort({date:1});
+	}).sort({ date: 1 });
 });
 
-app.get('/changeDeliveryStatus/:Orderid',function(req,res){
+app.get("/changeDeliveryStatus/:Orderid", function (req, res) {
 	// res.json("0");
-	Order.findById(req.params.Orderid,function(err,foundOrder)
-	{
-		if(err)
-		{
+	Order.findById(req.params.Orderid, function (err, foundOrder) {
+		if (err) {
 			console.log(err);
-			res.send({error: err});
-		}
-			
-		else
-		{	
-		
-			foundOrder['isDelivered']=true;
+			res.send({ error: err });
+		} else {
+			foundOrder["isDelivered"] = true;
 			foundOrder.save();
-			res.send({status: "OK"});
+			res.send({ status: "OK" });
 		}
-	})
+	});
 });
 
 app.get("/", (req, res) => {
 	res.render("index");
 });
-
 
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
@@ -466,44 +450,49 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 					}
 					var f = 0;
 					var i = 0;
-					for(i = 0;i<founduser.cart.foodItems.length; i++){
-						if(founduser.cart.foodItems[i]._id.toString() == req.params.id.toString()){
+					for (i = 0; i < founduser.cart.foodItems.length; i++) {
+						if (
+							founduser.cart.foodItems[i]._id.toString() ==
+							req.params.id.toString()
+						) {
 							f = 1;
 							console.log("1111");
 							break;
 						}
 					}
-					if (f==0){
+					if (f == 0) {
 						founduser.cart.foodItems.push(foundItem);
 						founduser.cart.amountPayable = Math.max(
-						0,
-						founduser.cart.total -
+							0,
+							founduser.cart.total -
+								Math.floor(founduser.wallet / 100),
+						);
+						founduser.cart.discountApplied = Math.min(
+							founduser.cart.total,
 							Math.floor(founduser.wallet / 100),
-					);
-					founduser.cart.discountApplied = Math.min(
-						founduser.cart.total,
-						Math.floor(founduser.wallet / 100),
-					);
-					founduser.save();
+						);
+						founduser.save();
 					} else {
-						console.log("yquqiqoq")
-						var q = founduser.cart.foodItems[i].qty
+						console.log("yquqiqoq");
+						var q = founduser.cart.foodItems[i].qty;
 						console.log(q);
-						console.log(founduser.cart.foodItems[i].qty)
-						founduser.cart.foodItems[i].qty = q+1;
-						console.log(founduser.cart.foodItems[i].qty)
+						console.log(founduser.cart.foodItems[i].qty);
+						founduser.cart.foodItems[i].qty = q + 1;
+						console.log(founduser.cart.foodItems[i].qty);
 						founduser.cart.amountPayable = Math.max(
-						0,
-						founduser.cart.total -
+							0,
+							founduser.cart.total -
+								Math.floor(founduser.wallet / 100),
+						);
+						founduser.cart.discountApplied = Math.min(
+							founduser.cart.total,
 							Math.floor(founduser.wallet / 100),
-					);
-					founduser.cart.discountApplied = Math.min(
-						founduser.cart.total,
-						Math.floor(founduser.wallet / 100),
-					);
-					founduser.save();
+						);
+						founduser.markModified("cart");
+						founduser.save();
+						console.log(founduser.cart.foodItems);
 					}
-					
+
 					//   founduser.wallet += 160;
 
 					req.flash("success", foundItem.title + " added to cart.");
@@ -535,17 +524,17 @@ app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 							index = i;
 						}
 					}
-					
+
 					if (index !== -1) {
 						founduser.cart.total =
 							founduser.cart.total -
 							founduser.cart.foodItems[index].cost;
-						if(founduser.cart.foodItems[index].qty > 1){
-							founduser.cart.foodItems[index].qty -= 1
+						if (founduser.cart.foodItems[index].qty > 1) {
+							founduser.cart.foodItems[index].qty -= 1;
 							req.flash(
-						"success",
-						foundItem.title + "quantity decreased by 1 .",
-					);
+								"success",
+								foundItem.title + "quantity decreased by 1 .",
+							);
 						} else {
 							founduser.cart.foodItems.splice(index, 1);
 						}
@@ -592,17 +581,17 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 							index = i;
 						}
 					}
-					
+
 					if (index !== -1) {
 						founduser.cart.total =
 							founduser.cart.total -
 							founduser.cart.foodItems[index].cost;
-						if(founduser.cart.foodItems[index].qty > 1){
-							founduser.cart.foodItems[index].qty -= 1
+						if (founduser.cart.foodItems[index].qty > 1) {
+							founduser.cart.foodItems[index].qty -= 1;
 							req.flash(
-						"success",
-						foundItem.title + "quantity decreased by 1 .",
-					);
+								"success",
+								foundItem.title + "quantity decreased by 1 .",
+							);
 						} else {
 							founduser.cart.foodItems.splice(index, 1);
 						}
@@ -985,11 +974,9 @@ app.get("/logout", function (req, res) {
 	res.redirect("/");
 });
 
-
-app.get('/cookies',function(req,res)
-{
-	res.render('cookies');
-})
+app.get("/cookies", function (req, res) {
+	res.render("cookies");
+});
 
 //===================== MIDDLEWARE =================//
 function isLoggedIn(req, res, next) {

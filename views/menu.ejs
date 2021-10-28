@@ -163,7 +163,7 @@
                 <% categories = ['starters', 'sandwich'] %>
                 <% categories.forEach(category => { %>
                     <div id="<%= category %>" class="my-5 " >
-                        <div class="h1 text-left sticky-top bg-white p-3"><%= category.charAt(0).toUpperCase() + category.slice(1); %></div>
+                        <div class="h2 text-left sticky-top bg-white p-3"><%= category.charAt(0).toUpperCase() + category.slice(1); %></div>
                         <hr>
                         <div class="row mx-3 d-flex justify-content-center">
                         <% for(var i = 0;i<allItems.length;i++){ %>
@@ -178,7 +178,7 @@
                                             <div class="card-body ">
                                             <div class="row">
                                                 <div class="col-9">
-                                                    <h5 class="card-title" style="font-size: 25px;"><%= allItems[i].title %></h5>
+                                                    <h5 class="card-title" style="font-size: 1.25em;"><%= allItems[i].title %></h5>
                                                 </div>
                                                 <% if(currentUser) { %>
                                                     <% var q = 0 %>
@@ -197,14 +197,14 @@
                                                             </div>
                                                         <% } else { %>
                                                             
-                                                        <div class="col-3">
+                                                        <div class="col-3 d-flex justify-content-center">
                                                             <form action="/cart/<%= allItems[i]._id %>?_method=DELETE" method="post">
-                                                                <button type="submit" class="btn btn-outline-primary rounded-lg ">-</button>
+                                                                <button type="submit" class="btn btn-outline-primary rounded-lg  minus">-</button>
                                                             </form>
                                                             
                                                             <input type="text" readonly value="<%= q %>"/>
                                                             <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                                <button type="submit" class="btn btn-outline-primary rounded-lg ">+</button>
+                                                                <button type="submit" class="btn btn-outline-primary rounded-lg plus">+</button>
                                                             </form>
                                                             
                                                         </div>
