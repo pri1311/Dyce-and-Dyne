@@ -39,7 +39,7 @@
 								>
 							</li>
 							<li>
-								<a href="#">Profile</a>
+								<a href="/profile">Profile</a>
 							</li>
 
 							<% } %>
@@ -47,7 +47,7 @@
 								<a href="#">Home</a>
 							</li>
 							<li>
-								<a href="#">About us</a>
+								<a href="#aboutus">About us</a>
 							</li>
 							<li>
 								<a href="/menu">Menu</a>
@@ -146,6 +146,13 @@
 										>Hey, <%= currentUser.name %></a
 									>
 								</div>
+								<span class="divider" >|</span>
+								<div class="" >
+									<img src="./icons/edit.svg" alt="" />
+									<a href="/logout"
+										>Logout</a
+									>
+								</div>
 								<% } %>
 							</div>
 						</div>
@@ -185,7 +192,7 @@
 								<a href="/cart">Cart</a>
 								<a href="#services">Services</a>
 								<a href="/profile">Profile</a>
-								<a href="#">Contact us</a>
+								<a href="#contact">Contact us</a>
 							</div>
 							<br />
 						</div>
@@ -719,7 +726,7 @@
 						</div>
 					</section>
 
-					<section class="contact-us flex d-flex row">
+					<section id="contact" class="contact-us flex d-flex row m-0 p-0">
 						<div class="contact-info-wrapper col-lg-6 col-sm-12">
 							<h1 class="section-heading">Contact us</h1>
 							<div class="contact-info">
@@ -751,7 +758,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="map col-lg-6 col-sm-12">
+						<div class="map col-lg-6 col-sm-12 p-0">
 							<iframe
 								src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7198.685490749466!2d72.8410088852966!3d19.215729905825974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDEyJzQ4LjQiTiA3MsKwNTAnMzAuNSJF!5e0!3m2!1sen!2sin!4v1635320404930!5m2!1sen!2sin"
 								width="600"

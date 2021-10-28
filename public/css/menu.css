@@ -54,23 +54,7 @@ aside nav a {
 span {
 	cursor: pointer;
 }
-.number {
-	margin: 100px;
-}
-.minus,
-.plus {
-	height: 2em;
-	width: 2em;
-	background: #f2f2f2;
-	border: 1px solid #ddd;
-	text-align: center;
-	color: black;
-	font-weight: bolder;
-	font-size: 1em;
-	padding: auto;
-	align-items: center;
-	align-content: center;
-}
+
 input {
 	height: 2em;
 	width: 4em;

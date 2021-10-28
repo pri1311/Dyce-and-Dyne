@@ -116,7 +116,7 @@
  
 
 
-    <div class=" container flash-container ">
+    <div class=" container flash-container fixed-top">
         <% if(error && error.length> 0 ) { %>
             <div class="row d-flex justify-content-between m-2">
                 <div class="alert alert-danger alert-dismissible fade show text-center" role="alert"
@@ -143,6 +143,16 @@
      <div class="row mr-0">
         <div class="d-none d-lg-block col-lg-3">
             <aside  class="sticky-top" >
+              <% if(currentUser) {%>
+                <div class="mt-3">
+                  <div class="row d-flex justify-content-center mt-3 pt-4">
+                    <a href="/cart" class="btn btn-outline-warning " >GO TO CART</a>
+  
+                  </div>
+
+                </div> 
+              <% } %>
+
             <nav id="menu-sidebar">
                 <!-- <ul> -->
                 <a class="nav-link" href="#starters">Starters</a>
@@ -174,10 +184,10 @@
                                         <div class="col-4 col-lg-2 d-flex align-items-center justify-content-center" style="height:inherit">
                                             <img src="<%=allItems[i].image %>" style="height:150px; width:150px; " class="card-img img-fluid rounded-lg" alt="...">
                                         </div>
-                                        <div class="col-6 col-lg-8">
-                                            <div class="card-body ">
-                                            <div class="row">
-                                                <div class="col-9">
+                                        <div class="col-8 col-lg-8">
+                                            <div class="card-body">
+                                            <div class="row no-gutters">
+                                                <div class="col-sm-7 col-lg-9">
                                                     <h5 class="card-title" style="font-size: 1.25em;"><%= allItems[i].title %></h5>
                                                 </div>
                                                 <% if(currentUser) { %>
@@ -190,34 +200,34 @@
                                                         <% }) %>
                                                         
                                                         <% if(q == 0)  {%>
-                                                            <div class="col-3">
+                                                            <div class="col-sm-5 col-lg-3">
                                                                 <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
                                                                     <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
                                                                 </form>
                                                             </div>
                                                         <% } else { %>
                                                             
-                                                        <div class="col-3 d-flex justify-content-center">
-                                                            <form action="/cart/<%= allItems[i]._id %>?_method=DELETE" method="post">
-                                                                <button type="submit" class="btn btn-outline-primary rounded-lg  minus">-</button>
+                                                        <div class="col-sm-5 col-lg-3 d-flex">
+                                                            <form action="/cartpage/<%= allItems[i]._id %>?_method=DELETE" method="post">
+                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-primary rounded-lg">-</button>
                                                             </form>
                                                             
                                                             <input type="text" readonly value="<%= q %>"/>
                                                             <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                                <button type="submit" class="btn btn-outline-primary rounded-lg plus">+</button>
+                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-primary rounded-lg">+</button>
                                                             </form>
                                                             
                                                         </div>
                                                         <% } %>
                                                     <% } else { %>
-                                                        <div class="col-3">
+                                                        <div class="col-sm-5 col-lg-3">
                                                                 <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
                                                                     <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
                                                                 </form>
                                                             </div>
                                                     <% } %>
                                                 <% } else { %>
-                                                    <div class="col-3">
+                                                    <div class="col-sm-5 col-lg-3">
                                                         <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
                                                             <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
                                                         </form>

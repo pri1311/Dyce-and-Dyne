@@ -41,7 +41,7 @@
       </lord-icon>
       <a href="" style="text-decoration: none; color: black">
         Order with
-        <b>Dyce&Dyne<span style="color: rgb(255, 187, 0)">.</span> </b></a
+        <b>Dyce&Dyne</b></a
       >
     </div>
 
@@ -99,7 +99,7 @@
       style="text-align: center; max-width: 800px"
     >
       <div style="font-size: x-large; color: orangered">Your cart</div>
-      <small>Because even the smallest contribution matters!</small>
+      <small>Our Delicacies at your doorstep!</small>
       <br />
       <hr />
       <br />
@@ -149,10 +149,9 @@
           <% for(i=0; i< items.length; i++) {%>
           <li class="list-group-item">
             <div class="row justify-content-between" style="text-align: start">
-              <div class="col-1"><%= i+1 %>.</div>
               <div class="col-4"><%= items[i].title %></div>
               <div
-                class="col-1"
+                class="col-1 d-none d-md-block"
                 style="
                   background-image: url('<%= items[i].image %>');
                   background-position: center;
@@ -163,10 +162,12 @@
                 "
               ></div>
               <!-- <div class="col-1"></div> -->
-              <div class="col-3 col-md-2">Rs.<%= items[i].cost %>.00</div>
-              <div class="col-2 p-0 p-md-2">
+               <div class="col-3 col-md-2">Rs.<%= items[i].cost %></div>
+              <div class="col-2 col-md-2"> &nbsp; x<%= items[i].qty %></div>
+              <div class="col-2 col-md-2"><%= items[i].qty*items[i].cost %></div>
+              <div class="col-1 p-0 p-md-2">
                 <form
-                  action="/cartpage/<%= items[i]._id %>?_method=DELETE"
+                  action="/cart/<%= items[i]._id %>?_method=DELETE"
                   method="post"
                 >
                   <button type="submit" class="btn btn-outline-danger">
