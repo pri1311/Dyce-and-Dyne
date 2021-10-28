@@ -320,7 +320,6 @@ app.get("/delivery", isDeliveryAgentLoggedIn, function (req, res) {
 				cost.push(sum);
 				schedule.push(temp);
 			}
-			console.log(cost);
 			res.render("delivery", { schedule: schedule, cost: cost });
 		}
 	}).sort({ date: -1 });

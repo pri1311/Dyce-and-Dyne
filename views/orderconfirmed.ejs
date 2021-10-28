@@ -59,17 +59,26 @@
                 <tbody>
                   <tr>
                     <td>
-                      <div class="py-2"> <span class="d-block text-muted">Order Date</span> <span><%=order.date%></span>
+                      <% var date = order.date.getDate() %>
+											<% var month = order.date.getMonth() + 1 %>
+											<% var year = order.date.getFullYear().toString() %>
+											<% var d = `${date}/${month}/${year}`%>
+											<% var time = order.date.toLocaleTimeString(); %>
+
+                      <div class="py-2"> 
+                        <span class="d-block text-muted mb-2">Order Date</span> 
+                        <span><%= d %></span>
+                        <div><small><%= time %></small></div>
                       </div>
                     </td>
                     <td>
-                      <div class="py-2"> <span class="d-block text-muted">Order No</span> <span><%=orderid %></span> </div>
+                      <div class="py-2"> <span class="d-block text-muted mb-2">Order No</span> <span><%=orderid %></span> </div>
                     </td>
                     <td>
-                      <div class="py-2"> <span class="d-block text-muted">Payment</span> <span><%= order.paymentMode %></span> </div>
+                      <div class="py-2"> <span class="d-block text-muted mb-2">Payment</span> <span><%= order.paymentMode %></span> </div>
                     </td>
                     <td>
-                      <div class="py-2"> <span class="d-block text-muted">Shiping Address</span> <span><%= order.user.fullAddress %></span> </div>
+                      <div class="py-2"> <span class="d-block text-muted mb-2">Shiping Address</span> <span><%= order.user.fullAddress %></span> </div>
                     </td>
                   </tr>
                 </tbody>

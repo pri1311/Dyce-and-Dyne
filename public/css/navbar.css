@@ -11,7 +11,7 @@ body {
 }
 
 .nav-link {
-  color: rgb(0, 0, 0) !important;
+  color: rgb(155, 149, 149) !important;
   font-size: large;
   font-weight: 600;
   transition: all 0.5s linear;
