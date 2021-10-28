@@ -329,7 +329,6 @@ app.get("/", (req, res) => {
 	res.render("index");
 });
 
-
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
 		if (err) {
@@ -465,12 +464,25 @@ app.get("/profile", isLoggedIn, function (req, res) {
 	});
 });
 
-app.get("/8puzzle", function (req, res) {
+app.get("/8puzzle", isLoggedIn, function (req, res) {
 	res.render("8puzzle");
 });
 
-app.get("/connect4", function (req, res) {
+app.get("/connect4", isLoggedIn, function (req, res) {
 	res.render("connect4");
+});
+
+app.post("/addWalletPoints", isLoggedIn, function (req, res) {
+	User.findById(req.user._id, function (err, foundUser) {
+		if (err) {
+			console.log(err);
+			return res.redirect("back");
+		} else {
+			foundUser.wallet += req.body.points;
+			foundUser.save();
+			res.redirect(req.body.game);
+		}
+	});
 });
 
 app.get("/ordercod", isLoggedIn, function (req, res) {
@@ -590,7 +602,7 @@ app.post("/afterOrderPlaced", (req, res) => {
 						founduser.cart.amountPayable = 0;
 						founduser.cart.discountApplied = 0;
 						founduser.save();
-						console.log(new_order._id)
+						console.log(new_order._id);
 						res.send({ status: "OK", orderid: new_order._id });
 					}
 				});
@@ -602,15 +614,14 @@ app.post("/afterOrderPlaced", (req, res) => {
 });
 
 app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
-	Order.find({_id: req.params.orderID}, (err,foundOrder)=> {
-		if(err) console.log(err)
+	Order.find({ _id: req.params.orderID }, (err, foundOrder) => {
+		if (err) console.log(err);
 		else {
-			console.log(foundOrder)
+			console.log(foundOrder);
 			var id = foundOrder[0]._id.toString().substring(0, 8);
-			res.render("orderconfirmed", {order: foundOrder[0],orderid : id });
-
+			res.render("orderconfirmed", { order: foundOrder[0], orderid: id });
 		}
-	})
+	});
 });
 
 //-----------------------------AUTH--------------------------------------

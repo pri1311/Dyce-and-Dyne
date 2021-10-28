@@ -148,3 +148,24 @@ body {
 	background: white;
 	cursor: default;
 }
+
+.gamebutton,
+.gamebutton:active,
+.gamebutton:hover {
+	display: block;
+	width: 100%;
+	padding: 2px 12px 4px;
+	font-family: inherit;
+	font-size: 18px;
+	border-radius: 8px;
+	border: none;
+	background-color: #ffb400;
+	color: #fff;
+	cursor: pointer;
+	outline: none;
+	margin-bottom: 2em;
+}
+
+.shadow {
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+}

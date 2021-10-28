@@ -209,7 +209,9 @@ function addWalletPoints() {
 		url: "/addWalletPoints",
 		data: {
 			points: points,
+			game: "/8puzzle",
 		},
 	});
+	location.reload();
 }
 getNewGame();

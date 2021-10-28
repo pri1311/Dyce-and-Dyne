@@ -109,7 +109,7 @@ h2 {
 }
 
 .start button,
-.info button {
+.gameinfo button {
 	display: block;
 	width: 100%;
 	padding: 2px 12px 4px;
@@ -235,4 +235,8 @@ h2 {
 		animation-timing-function: ease-out;
 		transform: translateY(0);
 	}
+}
+
+.displaynone {
+	display: none;
 }

@@ -1,3 +1,4 @@
+var maxDepthGlobal = 3;
 // constants
 const WEB_WORKER_URL = "/scripts/worker.js";
 const BLURBS = {
@@ -162,6 +163,7 @@ function startComputerTurn() {
 	createCursorChip(2, 0);
 
 	var maxDepth = parseInt($("input[name=dif-options]:checked").val(), 10) + 1;
+	maxDepthGlobal = maxDepth;
 	worker.postMessage({
 		messageType: "computer-move",
 		maxDepth: maxDepth,
@@ -213,6 +215,12 @@ function endGame(blurbKey, winningChips) {
 		for (var i = 0; i < winningChips.length; i++) {
 			createLitCell(winningChips[i].col, winningChips[i].row);
 		}
+	}
+	if (blurbKey === "p1-win") {
+		var points = 20 * (maxDepthGlobal - 1);
+		document.getElementById("modal-title").innerHTML =
+			"Wuhooooo! You earned " + points + " points";
+		document.getElementById("winbutton").click();
 	}
 }
 
@@ -270,4 +278,17 @@ function dropCursorChip(row, callback) {
 
 function indexToPixels(index) {
 	return index * 61 + 1 + "px";
+}
+
+function addWalletPoints() {
+	var points = 20 * (maxDepthGlobal - 1);
+	axios({
+		method: "post",
+		url: "/addWalletPoints",
+		data: {
+			points: points,
+			game: "/connect4",
+		},
+	});
+	location.reload();
 }
