@@ -445,8 +445,8 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 					if (founduser.cart.foodItems.length == 0) {
 						founduser.cart.total = foundItem.cost;
 					} else {
-						// founduser.cart.total =
-						// 	founduser.cart.total + foundItem.cost;
+						founduser.cart.total =
+							founduser.cart.total + foundItem.cost;
 					}
 					var f = 0;
 					var i = 0;
@@ -496,7 +496,7 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 					//   founduser.wallet += 160;
 
 					req.flash("success", foundItem.title + " added to cart.");
-					return res.redirect("/menu");
+					return res.redirect("/menu#" + foundItem.category);
 				}
 			});
 		}
@@ -533,10 +533,14 @@ app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 							founduser.cart.foodItems[index].qty -= 1;
 							req.flash(
 								"success",
-								foundItem.title + "quantity decreased by 1 .",
+								foundItem.title + "'s quantity decreased by 1 .",
 							);
 						} else {
 							founduser.cart.foodItems.splice(index, 1);
+							req.flash(
+								"success",
+								foundItem.title + " removed from cart.",
+							);
 						}
 					}
 					founduser.cart.amountPayable = Math.max(
@@ -548,12 +552,13 @@ app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 						founduser.cart.total,
 						Math.floor(founduser.wallet / 100),
 					);
+					founduser.markModified('cart');
 					founduser.save();
-					req.flash(
-						"success",
-						foundItem.title + " removed from cart.",
-					);
-					return res.redirect("/menu");
+					// req.flash(
+					// 	"success",
+					// 	foundItem.title + " removed from cart.",
+					// );
+					return res.redirect("/menu#" + foundItem.category);
 				}
 			});
 		}
@@ -585,16 +590,13 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 					if (index !== -1) {
 						founduser.cart.total =
 							founduser.cart.total -
-							founduser.cart.foodItems[index].cost;
-						if (founduser.cart.foodItems[index].qty > 1) {
-							founduser.cart.foodItems[index].qty -= 1;
+							(founduser.cart.foodItems[index].cost*founduser.cart.foodItems[index].qty);
+							founduser.cart.foodItems.splice(index, 1);
 							req.flash(
 								"success",
-								foundItem.title + "quantity decreased by 1 .",
+								foundItem.title + " removed from cart.",
 							);
-						} else {
-							founduser.cart.foodItems.splice(index, 1);
-						}
+						
 					}
 					founduser.cart.amountPayable = Math.max(
 						0,
@@ -605,11 +607,12 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 						founduser.cart.total,
 						Math.floor(founduser.wallet / 100),
 					);
+					founduser.markModified('cart');
 					founduser.save();
-					req.flash(
-						"success",
-						foundItem.title + " removed from cart.",
-					);
+					// req.flash(
+					// 	"success",
+					// 	foundItem.title + " removed from cart.",
+					// );
 					return res.redirect("/cart");
 				}
 			});
@@ -648,6 +651,15 @@ app.post("/addWalletPoints", isLoggedIn, function (req, res) {
 			return res.redirect("back");
 		} else {
 			foundUser.wallet += req.body.points;
+			foundUser.cart.amountPayable = Math.max(
+				0,
+				foundUser.cart.total -
+					Math.floor(foundUser.wallet / 100),
+			);
+			foundUser.cart.discountApplied = Math.min(
+				foundUser.cart.total,
+				Math.floor(foundUser.wallet / 100),
+			);
 			foundUser.save();
 			res.redirect(req.body.game);
 		}
