@@ -10,61 +10,112 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="/stylesheets/home.css"> -->
     <link rel="stylesheet" href="/css/navbar.css">
+        <link rel="stylesheet" href="/css/menu.css">
+<style>
+    html{
+        scroll-behavior: smooth;
+    }
+    body{
+        position: relative;
+    }
+</style>
 </head>
 
 <body>
-   <%- include('../partials/navbar.ejs') %>
+    <nav  id="navbar" class="navbar navbar-expand-lg navbar-light">
+	  <br />
+  <div class="container">
+    <a
+      class="navbar-brand link-navbar "
+      href="/"
+      style="font-weight: 900; font-size: xx-large; color: white"
+      ><img
+        height="50"
+        src="https://i.ibb.co/4myjK7k/Screenshot-450.png"
+        alt=""
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/menu">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/#aboutus">About Us</a>
+        </li>
+		<li class="nav-item">
+          <a class="nav-link link-navbar" href="/profile">My Orders</a>
+        </li>
+		<li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle link-navbar"
+            href="#"
+            id="navbarDropdown1"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i> Games </i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+            <a class="dropdown-item link-navbar" href="/8puzzle">8 Puzzle</a>
+            <a class="dropdown-item link-navbar" href="/connect4">Connect Four</a>
+          </div>
+        </li>
+        <% if(!currentUser) {%>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/login">Login</a>
+        </li>
+        <% } else { %>
+			<li class="nav-item">
+          <a class="nav-link link-navbar" href="/cart"> Cart</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle link-navbar"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i> <%= currentUser.name %> </i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item link-navbar" href="/profile">Profile</a>
+            <a class="dropdown-item link-navbar" href="/logout">Logout</a>
+          </div>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
     <title>Dyce&Dyne | Menu</title>
     
     <link rel="stylesheet" href="/stylesheets/store.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 
-    <div id="cover-pic" style="background-image: url(../images/store.jpg)">
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <div class="container" id="pic">
-            <div id="pic-text-one">
-                Order with <b>Dyce&Dyne</b><span style="color: #ffb400">.</span>
-            </div>
-            <!-- <div id="pic-text-two">Small actions lead to big changes.</div> -->
-            <br />
-            <a id="pic-button" class="btn btn-md" href="#links"> CATEGORIES</a>
-            &nbsp;
-            <% if (currentUser) { %>
-                <a id="pic-button" class="btn btn-md" href="/cart">MY CART</a>
-                &nbsp;
-                <a id="pic-button" class="btn btn-md" href="/profile#orders">MY ORDERS</a>
-                <% } else { %>
-                    <div></div>
-            <% } %>
-        </div>
-    </div>
-    <!-- <div class="container-fluid d-none d-md-block" id="links">
-        <br />
-        <div class="row justify-content-between">
-            <div class="col-2  text-center">
-                <a href="#men">Men <i class="fas fa-chevron-down"></i></a>
-            </div>
-            <div class="col-2 text-center ">
-                <a href="#women">Women<i class="fas fa-chevron-down"></i> </a>
-            </div>
-            <div class="col-2 text-center">
-                <a href="#beauty">Beauty <i class="fas fa-chevron-down"></i></a>
-            </div>
-            <div class="col-3 col-md-2 text-center">
-                <a href="#homedecor">Home Decor <i class="fas fa-chevron-down"></i></a>
-            </div>
-            <div class="col-1 col-md-2 text-center">
-                <a href="#food">Food <i class="fas fa-chevron-down"></i></a>
-            </div>
-            <div class="col-2 text-center">
-                <a href="#others">Others <i class="fas fa-chevron-down"></i></a>
-            </div>
-        </div>
-        <br />
-    </div> -->
-    <br />
-    <hr />
-    <br />
+ 
+
+
     <div class=" container flash-container ">
         <% if(error && error.length> 0 ) { %>
             <div class="row d-flex justify-content-between m-2">
@@ -89,293 +140,111 @@
                     </div>
                     <% } %>
     </div>
-    <!-- <div class="container">
-        <h2>Our allItems and Charity !</h2>
-        <br>
-        <div> <b>For every purchase you make from Aid there is a smile on someone's face.</b>
-            <br>
-            Our allItems are hand made by local vendors and craftsmen.
-            We believe in the idea of Vocal for local and Make In India.
-            We support small businesses and shopping at these small businesses not only puts more money into their local
-            economies, it also keeps alive the diversity of options that makes each community unique. A major share of
-            money recieved from the store is used for education, shelter and clothing of poor.The rest is used for
-            logistics and maintainence prupose.
-            <br>
-            Happy Shopping and Charity !<i class="fas fa-heart" style="color:red;"></i>
-            <br>
+     <div class="row mr-0">
+        <div class="d-none d-lg-block col-lg-3">
+            <aside  class="sticky-top" >
+            <nav id="menu-sidebar">
+                <!-- <ul> -->
+                <a class="nav-link" href="#starters">Starters</a>
+                <a class="nav-link" href="#sandwich">Sandwiches</a>
+                <a class="nav-link" href="#">Pav Bhaji</a>
+                <a class="nav-link" href="#">Breads</a>
+                <a class="nav-link" href="#">North Indian</a>
+                <a class="nav-link" href="#">Rice & Noodes</a>
+                <a class="nav-link" href="#">Bevrages</a>
+                <a class="nav-link" href="#">Dessert</a>
+                <a class="nav-link" href="#">Extras</a>
+                <!-- </ul> -->
+            </nav>
+            </aside>
+        </div>
+        <div class="col-lg-9 d-flex justify-content-center">
+            <div data-spy="scroll" data-target="#menu-sidebar" data-offset="0">
+                <% categories = ['starters', 'sandwich'] %>
+                <% categories.forEach(category => { %>
+                    <div id="<%= category %>" class="my-5 " >
+                        <div class="h1 text-left sticky-top bg-white p-3"><%= category.charAt(0).toUpperCase() + category.slice(1); %></div>
+                        <hr>
+                        <div class="row mx-3 d-flex justify-content-center">
+                        <% for(var i = 0;i<allItems.length;i++){ %>
+                        <% if(allItems[i].category==category) { %>
+                                <div class="d-flex justify-content-center col-12 ">
+                                    <div class="card mb-3 border-0" style="width: inherit; height: 180px; ">
+                                        <div class="row no-gutters" style="height: inherit;" >
+                                        <div class="col-4 col-lg-2 d-flex align-items-center justify-content-center" style="height:inherit">
+                                            <img src="<%=allItems[i].image %>" style="height:150px; width:150px; " class="card-img img-fluid rounded-lg" alt="...">
+                                        </div>
+                                        <div class="col-6 col-lg-8">
+                                            <div class="card-body ">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <h5 class="card-title" style="font-size: 25px;"><%= allItems[i].title %></h5>
+                                                </div>
+                                                <% if(currentUser) { %>
+                                                    <% var q = 0 %>
+                                                    <% if(currentUser.cart.foodItems.length > 0 ) {%>
+                                                        <% currentUser.cart.foodItems.forEach(item => { %>
+                                                            <% if(item._id.toString() == allItems[i]._id.toString() ) { %>
+                                                                <% q = item.qty %>
+                                                            <% } %>
+                                                        <% }) %>
+                                                        
+                                                        <% if(q == 0)  {%>
+                                                            <div class="col-3">
+                                                                <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
+                                                                    <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                                </form>
+                                                            </div>
+                                                        <% } else { %>
+                                                            
+                                                        <div class="col-3">
+                                                            <form action="/cart/<%= allItems[i]._id %>?_method=DELETE" method="post">
+                                                                <button type="submit" class="btn btn-outline-primary rounded-lg ">-</button>
+                                                            </form>
+                                                            
+                                                            <input type="text" readonly value="<%= q %>"/>
+                                                            <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
+                                                                <button type="submit" class="btn btn-outline-primary rounded-lg ">+</button>
+                                                            </form>
+                                                            
+                                                        </div>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <div class="col-3">
+                                                                <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
+                                                                    <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                                </form>
+                                                            </div>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <div class="col-3">
+                                                        <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
+                                                            <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                        </form>
+                                                    </div>
+                                                <% } %>
+                                                
+                                            </div>
+                                            
+                                            <p class="card-text font-weight-bold text-muted"> &#8377; <%= allItems[i].cost %></p>
+                                            <p class="card-text text-muted d-none d-lg-block"><%= allItems[i].desc %></p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <% } %>
+                                <% } %>  
+                            </div>
+                                 
+                    </div>
+                <% }) %>
+                 </div>
         </div>
 
-    </div> -->
-    <div class="container" id="men">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//imamsnbq.json" trigger="loop"
-                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b> M E N</b>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <% for(var i=0; i < allItems.length; i++) {%>
-                    <% if (allItems[i].category=="Sandwich" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="container pcont ">
-                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-        </div>
-        <br />
-        <br />
     </div>
 
-
-    <div class="container" id="women">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//sodlceyy.json" trigger="loop"
-                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b>W O M E N</b>
-        </div>
-        <hr />
-        <div class="container ">
-            <div class="row">
-                <% for(var i=0; i<allItems.length; i++) {%>
-                    <% if (allItems[i].category=="Main Course" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3  ">
-                            <div class="container pcont ">
-                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-
-        </div>
-        <br />
-        <br />
-    </div>
-
-    <div class="container" id="beauty">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//rjzlnunf.json" trigger="loop"
-                colors="primary:#121331,secondary:#eeca66" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b>B E A U T Y</b>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <% for(var i=0; i<allItems.length; i++) {%>
-                    <% if (allItems[i].category=="Starters" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
-                            <div class="container pcont ">
-                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-
-        </div>
-    </div>
-
-
-    <div class="container" id="homedecor">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//gmzxduhd.json" trigger="loop"
-                colors="primary:#121331,secondary:#eeca66" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b>H O M E D E C O R </b>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <% for(var i=0; i<allItems.length; i++) {%>
-                    <% if (allItems[i].category=="homedecor" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
-                            <div class="container pcont ">
-                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-
-        </div>
-        <br />
-        <br />
-    </div>
-
-    <div class="container" id="food">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//jpdtnwas.json" trigger="loop"
-                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b>F O O D</b>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <% for(var i=0; i<allItems.length; i++) {%>
-                    <% if (allItems[i].category=="food" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="container pcont ">
-                                <div class=" image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-
-        </div>
-        <br />
-        <br />
-    </div>
-
-    <div class="container" id="others">
-        <div>
-            <br />
-            <br />
-            <br />
-            <script src="https://cdn.lordicon.com//libs/frhvbuzj/lord-icon-2.0.2.js"></script>
-            <lord-icon src="https://cdn.lordicon.com//ribdawhq.json" trigger="loop"
-                colors="primary:#121331,secondary:#e8b730" style="width: 50px; height: 50px">
-            </lord-icon>
-            <b>O T H E R S</b>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <% for(var i=0; i<allItems.length; i++) {%>
-                    <% if (allItems[i].category=="others" ) {%>
-                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 ">
-                            <div class="container pcont ">
-                                <div class="image mb-2" style="background-image: url('<%= allItems[i].image %>')">
-                                </div>
-                                <div clas="container">
-                                    <h6 class="card-title">
-                                        <%= allItems[i].title %>
-                                    </h6>
-                                </div>
-                                <div>
-                                    Rs. <%= allItems[i].cost %>
-                                        <hr class="mt-1 mb-2">
-                                        <form action="/cart/<%= allItems[i]._id %>" method="post">
-                                            <button type="submit" href="#"
-                                                class="btn btn-sm btn-outline-warning m-0 p-1">Add to cart</button>
-                                        </form>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <% } %>
-                            <% } %>
-            </div>
-
-        </div>
-        <br />
-        <br />
-    </div>
-
-    <script src="/scripts/store.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -386,4 +255,23 @@
       integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
       crossorigin="anonymous"
     ></script>
-    <%- //include("./partials/footer") %>
+    <script>
+        $('body').scrollspy({ target: '#menu-sidebar' })
+        $(document).ready(function() {
+			$('.minus').click(function () {
+				var $input = $(this).parent().find('input');
+				var count = parseInt($input.val()) - 1;
+				count = count < 1 ? 1 : count;
+				$input.val(count);
+				$input.change();
+				return false;
+			});
+			$('.plus').click(function () {
+				var $input = $(this).parent().find('input');
+				$input.val(parseInt($input.val()) + 1);
+				$input.change();
+				return false;
+			});
+		});
+
+    </script>

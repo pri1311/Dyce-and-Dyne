@@ -211,26 +211,53 @@ const _addressToLatLng = async (address) => {
 
 app.get("/tsp/:deliveryNo", async function (req, res) {
 	var currdt = Date.now();
-	Order.find({}, async function (err, allOrders) {
+	Order.find({isDelivered:false}, async function (err, allOrders) {
 		if (err) console.log(err);
 		else {
-			var map = {};
-			allOrders.forEach((order) => {
-				var diff = currdt - order.date;
-				diff = diff / 1000;
+			// var map = {};
+			// allOrders.forEach((order) => {
+			// 	var diff = currdt - order.date;
+			// 	diff = diff / 1000;
 
-				var x = Math.ceil(diff / 1200);
-				if (map[x] === undefined) map[x] = [];
-				map[x].push(order);
-			});
-			var schedule = [];
-			var cost = [];
-			for (var key in map) {
-				var temp = [];
-				for (var a in map[key]) {
-					temp.push(map[key][a]);
+			// 	var x = Math.ceil(diff / 1200);
+			// 	if (map[x] === undefined) map[x] = [];
+			// 	map[x].push(order);
+			// });
+			// var schedule = [];
+			// var cost = [];
+			// for (var key in map) {
+			// 	var temp = [];
+			// 	for (var a in map[key]) {
+			// 		temp.push(map[key][a]);
+			// 	}
+			// 	schedule.push(temp);
+			// }
+			var map = {};
+			var schedule=[];
+			for(var i=0;i<allOrders.length;i++)
+			{
+				var currdt= allOrders[i].date;
+				var temp=[];
+				temp.push(allOrders[i]);
+				for(var j=i+1;j<allOrders.length;j++)
+				{
+					var diff= allOrders[j].date-currdt;
+					diff=diff/1000;
+					if(diff<=1200)
+					{
+						i++;
+						temp.push(allOrders[j]);
+					}
+					else
+						break;	
 				}
 				schedule.push(temp);
+			}
+			for(var k=0;k<schedule.length;k++)
+			{
+				for(var j=0;j<schedule[k].length;j++)
+					console.log(schedule[k][j]['total']);
+				console.log()
 			}
 			var allOrders = schedule[req.params.deliveryNo];
 
@@ -289,45 +316,102 @@ app.get("/tsp/:deliveryNo", async function (req, res) {
 					CORDINATES[bestTour[i]].latitude,
 				]);
 			}
-			res.render("tsp.ejs", { cords: cords, order: location });
+			res.render("tsp.ejs", { cords: cords, order: location , schedule:allOrders, tspno : req.params.deliveryNo });
 		}
-	});
+	}).sort({date:1});
 });
 
-app.get("/delivery", isDeliveryAgentLoggedIn, function (req, res) {
-	var currdt = Date.now();
-	Order.find({}, function (err, allOrders) {
+app.get("/delivery",  function (req, res) {
+	
+	Order.find({isDelivered:false}, function (err, allOrders) {
 		if (err) console.log(err);
 		else {
 			var map = {};
-			allOrders.forEach((order) => {
-				var diff = currdt - order.date;
-				diff = diff / 1000;
-
-				var x = Math.ceil(diff / 1200);
-				if (map[x] === undefined) map[x] = [];
-				map[x].push(order);
-			});
-			var schedule = [];
-			var cost = [];
-			for (var key in map) {
-				var temp = [];
-				var sum = 0;
-				for (var a in map[key]) {
-					sum = sum + map[key][a]["total"];
-					temp.push(map[key][a]);
+			var schedule=[];
+			for(var i=0;i<allOrders.length;i++)
+			{
+				var currdt= allOrders[i].date;
+				var temp=[];
+				temp.push(allOrders[i]);
+				for(var j=i+1;j<allOrders.length;j++)
+				{
+					var diff= allOrders[j].date-currdt;
+					diff=diff/1000;
+					if(diff<=1200)
+					{
+						i++;
+						temp.push(allOrders[j]);
+					}
+					else
+						break;	
 				}
-				cost.push(sum);
 				schedule.push(temp);
 			}
+			// allOrders.forEach((order) => {
+			// 	var diff = currdt - order.date;
+			// 	diff = diff / 1000;
+
+			// 	var x = Math.ceil(diff / 1200);
+			// 	if (map[x] === undefined) map[x] = [];
+			// 	map[x].push(order);
+			// });
+			// var schedule = [];
+			// var cost = [];
+			// for (var key in map) {
+			// 	var temp = [];
+			// 	var sum = 0;
+			// 	for (var a in map[key]) {
+			// 		sum = sum + map[key][a]["total"];
+			// 		temp.push(map[key][a]);
+			// 	}
+			// 	cost.push(sum);
+			// 	schedule.push(temp);
+			// }
+			var cost=[];
+			for(var i=0;i<schedule.length;i++)
+			{
+				var sum=0;
+				for(var j=0;j<schedule[i].length;j++)
+					sum=sum+schedule[i][j].total;
+				cost.push(sum);
+			}
+			for(var k=0;k<schedule.length;k++)
+			{
+				for(var j=0;j<schedule[k].length;j++)
+					console.log(schedule[k][j]['total']);
+				console.log()
+			}
+				
+			//res.send(schedule);
 			res.render("delivery", { schedule: schedule, cost: cost });
 		}
-	}).sort({ date: -1 });
+	}).sort({date:1});
+});
+
+app.get('/changeDeliveryStatus/:Orderid',function(req,res){
+	// res.json("0");
+	Order.findById(req.params.Orderid,function(err,foundOrder)
+	{
+		if(err)
+		{
+			console.log(err);
+			res.send({error: err});
+		}
+			
+		else
+		{	
+		
+			foundOrder['isDelivered']=true;
+			foundOrder.save();
+			res.send({status: "OK"});
+		}
+	})
 });
 
 app.get("/", (req, res) => {
 	res.render("index");
 });
+
 
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
@@ -377,11 +461,95 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 					if (founduser.cart.foodItems.length == 0) {
 						founduser.cart.total = foundItem.cost;
 					} else {
-						founduser.cart.total =
-							founduser.cart.total + foundItem.cost;
+						// founduser.cart.total =
+						// 	founduser.cart.total + foundItem.cost;
 					}
-					founduser.cart.foodItems.push(foundItem);
+					var f = 0;
+					var i = 0;
+					for(i = 0;i<founduser.cart.foodItems.length; i++){
+						if(founduser.cart.foodItems[i]._id.toString() == req.params.id.toString()){
+							f = 1;
+							console.log("1111");
+							break;
+						}
+					}
+					if (f==0){
+						founduser.cart.foodItems.push(foundItem);
+						founduser.cart.amountPayable = Math.max(
+						0,
+						founduser.cart.total -
+							Math.floor(founduser.wallet / 100),
+					);
+					founduser.cart.discountApplied = Math.min(
+						founduser.cart.total,
+						Math.floor(founduser.wallet / 100),
+					);
+					founduser.save();
+					} else {
+						console.log("yquqiqoq")
+						var q = founduser.cart.foodItems[i].qty
+						console.log(q);
+						console.log(founduser.cart.foodItems[i].qty)
+						founduser.cart.foodItems[i].qty = q+1;
+						console.log(founduser.cart.foodItems[i].qty)
+						founduser.cart.amountPayable = Math.max(
+						0,
+						founduser.cart.total -
+							Math.floor(founduser.wallet / 100),
+					);
+					founduser.cart.discountApplied = Math.min(
+						founduser.cart.total,
+						Math.floor(founduser.wallet / 100),
+					);
+					founduser.save();
+					}
+					
 					//   founduser.wallet += 160;
+
+					req.flash("success", foundItem.title + " added to cart.");
+					return res.redirect("/menu");
+				}
+			});
+		}
+	});
+});
+
+app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
+	User.findById(req.user._id, function (err, founduser) {
+		if (err) {
+			console.log(err);
+			return res.redirect("back");
+		} else {
+			FoodItem.findById(req.params.id, function (err, foundItem) {
+				if (err) {
+					console.log(err);
+					return res.redirect("back");
+				} else {
+					var index = -1;
+					console.log(foundItem._id);
+					for (var i = 0; i < founduser.cart.foodItems.length; i++) {
+						if (
+							founduser.cart.foodItems[i]._id.toString() ==
+							foundItem._id.toString()
+						) {
+							index = i;
+						}
+					}
+					
+					if (index !== -1) {
+						founduser.cart.total =
+							founduser.cart.total -
+							founduser.cart.foodItems[index].cost;
+						if(founduser.cart.foodItems[index].qty > 1){
+							founduser.cart.foodItems[index].qty -= 1
+							req.flash(
+						"success",
+						foundItem.title + "quantity decreased by 1 .",
+					);
+						} else {
+							founduser.cart.foodItems.splice(index, 1);
+						}
+					}
 					founduser.cart.amountPayable = Math.max(
 						0,
 						founduser.cart.total -
@@ -392,7 +560,10 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 						Math.floor(founduser.wallet / 100),
 					);
 					founduser.save();
-					req.flash("success", foundItem.title + " added to cart.");
+					req.flash(
+						"success",
+						foundItem.title + " removed from cart.",
+					);
 					return res.redirect("/menu");
 				}
 			});
@@ -421,11 +592,20 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 							index = i;
 						}
 					}
+					
 					if (index !== -1) {
 						founduser.cart.total =
 							founduser.cart.total -
 							founduser.cart.foodItems[index].cost;
-						founduser.cart.foodItems.splice(index, 1);
+						if(founduser.cart.foodItems[index].qty > 1){
+							founduser.cart.foodItems[index].qty -= 1
+							req.flash(
+						"success",
+						foundItem.title + "quantity decreased by 1 .",
+					);
+						} else {
+							founduser.cart.foodItems.splice(index, 1);
+						}
 					}
 					founduser.cart.amountPayable = Math.max(
 						0,
@@ -804,6 +984,12 @@ app.get("/logout", function (req, res) {
 	req.flash("success", "Logged you out!");
 	res.redirect("/");
 });
+
+
+app.get('/cookies',function(req,res)
+{
+	res.render('cookies');
+})
 
 //===================== MIDDLEWARE =================//
 function isLoggedIn(req, res, next) {

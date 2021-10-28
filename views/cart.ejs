@@ -166,7 +166,7 @@
               <div class="col-3 col-md-2">Rs.<%= items[i].cost %>.00</div>
               <div class="col-2 p-0 p-md-2">
                 <form
-                  action="/cart/<%= items[i]._id %>?_method=DELETE"
+                  action="/cartpage/<%= items[i]._id %>?_method=DELETE"
                   method="post"
                 >
                   <button type="submit" class="btn btn-outline-danger">

@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="/css/profile.css" />
 	</head>
 
-	<body>
+	<body onload="checkCookie()">
 		<%- include('../partials/navbar.ejs') %>
 		<div class="container row d-flex justify-content-center m-auto">
 			<div class="col-lg-4 col-sm-6">
@@ -36,6 +36,8 @@
 								complete.
 							</p>
 							<a
+								onclick="setcookie(1)"
+								id="game1"
 								href="/8puzzle"
 								class="btn btn-primary primaryColor gameButton"
 								>Play!</a
@@ -53,7 +55,9 @@
 								Take a break to play a game of Connect 4 and
 								earn tons of points!
 							</p>
-							<a
+							<a 
+							onclick="setcookie(2)"
+								id="game2"
 								href="/connect4"
 								class="btn btn-primary primaryColor gameButton"
 								>Play!</a
@@ -157,5 +161,72 @@
 			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
 			crossorigin="anonymous"
 		></script>
+				<script>
+            var username = <%- JSON.stringify(currentUser.username) %>
+			console.log(username);
+            function getCookie(cname) {
+              let name = cname + "=";
+              let decodedCookie = decodeURIComponent(document.cookie);
+              let ca = decodedCookie.split(";");
+              for (let i = 0; i < ca.length; i++) {
+                  let c = ca[i];
+                  while (c.charAt(0) == " ") {
+                      c = c.substring(1);
+                  }
+                  if (c.indexOf(name) == 0) {
+                      return c.substring(name.length, c.length);
+                  }
+              }
+              return "";
+          }
+            function checkCookie() {
+                let userG1 = getCookie(username + "GAME1");
+                if (userG1 != "" && userG1!=null && userG1 >=3) {
+                    var el = document.getElementById("game1");
+                    el.disabled=true;
+					el.classList.add("disabled");
+					el.href="#";
+                }
+                let userG2 = getCookie(username + "GAME2");
+                if (userG2 != ""  && userG2!=null && userG2 >= 3) {
+                    var el = document.getElementById("game2");
+                    el.disabled=true;
+					el.classList.add("disabled");
+					el.href="#";
+                }
+            }
+            function setcookie(gameNo) {
+                var cname = username + "GAME" + gameNo.toString();
+                console.log("hhh");
+                let user = getCookie(cname);
+                let value=parseInt(user[0]);
+                console.log(user);
+                if (user == "" || user==null) {
+                    console.log('yy');
+                    const d = new Date();
+                    d.setTime(d.getTime() + (24*60*60*1000));
+                    let expires = "expires=" + d.toGMTString();
+                    var cvalue = 1;
+                    document.cookie = cname + "=" + cvalue + expires+";" + expires + ";path=/";
+                } 
+                else if (value < 3)
+                {
+                    var expires=user.slice(1);
+                    console.log(expires);
+                    document.cookie = cname + "=" + (value+1).toString() + expires+ ";" + expires + ";path=/";
+                } 
+                else {
+                    console.log("ww")
+                    var el = document.getElementById("game" + gameNo.toString());
+                    el.disabled=true;
+					el.classList.add("disabled");
+					alert("Sorry ! You cannot play the game more than 3 times a day ! ")
+					el.href="#";
+                   
+                }
+            }
+            
+            
+        </script>
 	</body>
 </html>

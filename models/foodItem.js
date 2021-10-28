@@ -5,7 +5,9 @@ var foodItemSchema = new mongoose.Schema({
     category: String,
     image: String,
     cost: Number,
-    desc: String
+    desc: String,
+    isVeg: Boolean,
+    qty: { type: Number, default: 1 },
 })
 
 module.exports = mongoose.model("FoodItem", foodItemSchema);
