@@ -41,8 +41,8 @@
 					>
 						<div style="background-color: black; padding: 2em">
 							<h2 style="color: white">
-								Eat, Play, & Have Fun!!
-							</h2>
+								Play, Earn, Eat, Repeat
+ !							</h2>
 							<p style="color: white">
 								Whether you’re looking for biryani to feed your
 								desi cravings, soul comforting pizzas and
@@ -56,8 +56,8 @@
 					</div>
 				</div>
 				<div class="col-sm-6 login-section-wrapper">
-					<div class="brand-wrapper">
-						<img src="./images/logo.png" alt="logo" class="logo" />
+					<div class="">
+						<img src="./images/logo.png" alt="logo" class="logo" height="75px" />
 					</div>
 					<div class="container flash-container">
 						<% if(error && error.length> 0 ) { %>
@@ -109,7 +109,7 @@
 						<% } %>
 					</div>
 					<div class="login-wrapper my-auto">
-						<h2 class="login-title">Welcome back!</h2>
+						<h5 style="font-style:italic; font-weight:700;" class="mb-5" >Welcome back!</h5>
 						<form action="/login" method="post">
 							<div class="form-group">
 								<label for="email">Email</label>
@@ -119,6 +119,7 @@
 									id="email"
 									class="form-control"
 									placeholder="email@example.com"
+                                    required
 								/>
 							</div>
 							<div class="form-group mb-4">
@@ -129,6 +130,7 @@
 									id="password"
 									class="form-control"
 									placeholder="*********"
+                                    required
 								/>
 							</div>
 							<input

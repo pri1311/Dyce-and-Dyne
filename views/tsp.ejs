@@ -26,6 +26,7 @@
 			href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css"
 			rel="stylesheet"
 		/>
+		
 
 		<!-- Import Mapbox GL Directions -->
 		<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
@@ -48,10 +49,10 @@
 
 			#map {
 				position: absolute;
-				top: 80;
-				bottom: 10;
+				top: 120;
+				
 				width: 85%;
-				height: 75%;
+				height: 70%;
 				margin: auto;
 				align-self: center;
 				box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -95,11 +96,112 @@
 				background: rgb(62, 255, 62);
 				pointer-events: none;
 			}
+			@import url("https://fonts.googleapis.com/css?family=Josefin+Sans|Nunito:300,400,700&amp;display=swap");
+:root {
+  --member-animation: all 0.35s ease-in-out;
+  --font-family-1: "Josefin Sans", sans-serif;
+  --font-family-2: Nunito, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* TIMELINE */
+#timeline-container {
+  overflow: auto;
+  padding: 50px 0;
+}
+#timeline-container .inner-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+#timeline-container .inner-container .heading {
+  text-align: center;
+  font-family: var(--font-family-1);
+  font-weight: 700;
+  font-size: 3rem;
+  color: rgb(10, 10, 10);
+  margin-top: 0;
+}
+
+.timeline {
+  margin: 0 auto;
+  position: relative;
+  left: 120px;
+  width: 80%;
+  max-width: 900px;
+  margin-top: 16px;
+  margin-left: 5%;
+}
+
+.timeline-item {
+  color: #000000;
+  font-family: var(--font-family-2);
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  border-left: 4px solid rgb(255, 174, 0);
+  border-bottom: 1px solid rgb(255, 174, 0);
+  position: relative;
+  list-style-type: none;
+  --item-width: calc(100%);
+}
+.timeline-item::after {
+  content: attr(data-date);
+  position: absolute;
+  right: calc(var(--item-width) + 40px);
+  top: 16px;
+  float: right;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.timeline-item::before {
+  content: "";
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  background-color: rgb(7, 7, 7);
+  position: absolute;
+  left: -10px;
+  top: 21px;
+}
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .timeline {
+    margin: 0 auto;
+    position: relative;
+    left: 85px;
+  }
+  .timeline .timeline-item {
+    font-size: 1.1rem;
+  }
+  .timeline .timeline-item::after {
+    right: calc(var(--item-width) + 30px);
+  }
+}
+@media only screen and (max-width: 800px) {
+  .timeline-item {
+    padding: 1rem 1.5rem 1rem 0.5rem;
+  }
+  .timeline-item::after {
+    right: calc(var(--item-width) + 20px);
+  }
+}
+/* TIMELINE end */
 		</style>
 	</head>
 
 	<body>
-		<div class="container">
+		<div class="container" >
 			<br />
 			<div
 				class="text-center"
@@ -122,17 +224,14 @@
 				<% }) %>
 				<small style="font-weight: bold">Dyce and Dyne.</small>
 			</div>
-			<small
-				>Please follow the route shown on the screen for faster
-				delivery.</small
-			>
-			<small>Please Obey Traffic Rules.</small>
+			
+			<br>	
 		</div>
 
 		<div class="container">
 			<div id="map" class="row"></div>
 		</div>
-                <div class="container p-2" style="margin-top:580px; border:1px solid grey; border-radius:20px">
+            <!-- <div class="container p-2" style="margin-top:580px; border:1px solid grey; border-radius:20px">
             <h2 class="text-center">DELIVERY STATUS </h2>  
             <hr>
             <% var i = 0 %>
@@ -166,7 +265,34 @@
                     </div>
                 </div> 
             <%}) %>
-        </div>
+        </div> -->
+		<div class="container" style="margin-top:500px">
+			<div id="timeline-container">
+				<div class="inner-container">
+				  <h4 class="heading">Schedule</h4>
+				  <hr>	
+				  <ul class="timeline">
+					  <% schedule.forEach((x)=>{ %>
+						<li class="timeline-item" data-date="<%= x._id.toString().substring(10) %>">
+							<div class="container p-3" style="box-shadow:0px 2px 1px grey; border-radius:10px; font-size:12px; text-align:start">
+								<h5> Order for  <%= x.user.name %></h5>
+								<b>Drop Location</b>:<%= x.user.fullAddress %>
+								<br>
+								<b>Amount: </b> Rs.<%= x.total %>
+								<br>
+								<b>Status: </b> 
+                            
+                                <button onclick="changeStatus('<%=  x._id.toString() %>')" id="<%= x._id %>a" class="btn btn-sm  btn-outline-success btn-md">Delivering..</button>
+                            
+							</div>
+						</li> 
+					  <% }) %>
+					
+				  </ul>
+				</div>
+			  </div>
+			  <a class="btn btn-info" href="/delivery">DELIVERY COMPLETE</a>	
+		</div>
 		<script
 			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

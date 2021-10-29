@@ -24,7 +24,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6 login-section-wrapper">
-					<div class="brand-wrapper">
+					<div class="brand-wrapper" style="margin-bottom:0">
 						<img src="./images/logo.png" alt="logo" class="logo" />
 					</div>
 					<div class="container flash-container">
@@ -77,7 +77,8 @@
 						<% } %>
 					</div>
 					<div class="login-wrapper my-auto">
-						<h2 class="login-title">Welcome back!</h2>
+						<h5  style="font-style:italic; font-weight:700;" >Welcome back!</h5>
+						<br>	
 						<form action="/deliverylogin" method="post">
 							<div class="form-group">
 								<label for="email">Email</label>
@@ -87,6 +88,7 @@
 									id="email"
 									class="form-control"
 									placeholder="email@example.com"
+                                    required
 								/>
 							</div>
 							<div class="form-group mb-4">
@@ -97,6 +99,7 @@
 									id="password"
 									class="form-control"
 									placeholder="*********"
+                                    required
 								/>
 							</div>
 							<input
@@ -136,15 +139,16 @@
 					>
 						<div style="background-color: black; padding: 2em">
 							<h2 style="color: white">
-								Eat, Play, & Have Fun!!
+								Play, Earn, Eat, Repeat
 							</h2>
 							<p style="color: white">
-								Lorem ipsum dolor sit amet, consectetur
-								adipisicing elit. In reiciendis minus minima
-								repudiandae, repellat, optio quisquam distinctio
-								dolorem alias exercitationem nostrum asperiores
-								nemo nam! Corporis laborum inventore odit
-								aliquid. Ducimus!
+								Whether you’re looking for biryani to feed your
+								desi cravings, soul comforting pizzas and
+								burgers, or even a salad with a cup of chai or
+								coffee,
+								<span style="color: #fdbb28">Dyce&Dyne</span> is
+								the only app you need for the quickest doorstep
+								delivery of your favourites.
 							</p>
 						</div>
 					</div>

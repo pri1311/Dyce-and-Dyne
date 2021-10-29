@@ -39,7 +39,7 @@
 					>
 						<div style="background-color: black; padding: 2em">
 							<h2 style="color: white">
-								Eat, Play, & Have Fun!!
+								Play, Earn, Eat, Repeat !
 							</h2>
 							<p style="color: white">
 								Whether you’re looking for biryani to feed your
@@ -54,8 +54,8 @@
 					</div>
 				</div>
 				<div class="col-sm-6 login-section-wrapper">
-					<div class="brand-wrapper">
-						<img src="./images/logo.png" alt="logo" class="logo" />
+					<div >
+						<img src="./images/logo.png" alt="logo" class="logo" height="75" />
 					</div>
 					<div class="container flash-container">
 						<% if(error && error.length> 0 ) { %>
@@ -107,9 +107,10 @@
 						<% } %>
 					</div>
 					<div class="login-wrapper my-auto">
-						<h2 class="login-title">
-							Hello Friend! Glad to see you.
-						</h2>
+						<h4 style="font-style:italic;" >
+							Hola! Glad to see you.
+						</h4>
+						<br>	
 						<form action="/signup" method="post">
 							<div class="form-group">
 								<label for="name">Name</label>
@@ -118,6 +119,7 @@
 									name="name"
 									id="name"
 									class="form-control"
+                  required
 								/>
 							</div>
 
@@ -128,6 +130,7 @@
 									name="username"
 									id="email"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<div class="form-group">
@@ -137,6 +140,7 @@
 									name="phone"
 									id="phone"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<div class="form-group">
@@ -146,6 +150,7 @@
 									name="flatwing"
 									id="flatwing"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<div class="form-group">
@@ -155,6 +160,7 @@
 									name="locality"
 									id="locality"
 									class="form-control"
+                  required
 								/>
 							</div>
 
@@ -165,6 +171,7 @@
 									name="city"
 									id="city"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<div class="form-group">
@@ -174,6 +181,7 @@
 									name="pincode"
 									id="pincode"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<div class="form-group mb-4">
@@ -183,6 +191,7 @@
 									name="password"
 									id="password"
 									class="form-control"
+                  required
 								/>
 							</div>
 							<input
