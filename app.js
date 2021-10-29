@@ -425,7 +425,7 @@ app.get("/", (req, res) => {
     "category": "PavBhaji",
     "image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/zuyb0ntyznxwu8vvclzx",
     "cost": 240,
-    "desc": "Maska masala tadka bhaji + 2 grilled pav + 1 papad + onion-lemon (not available in jain)",
+    "desc": "Maska masala tadka bhaji + 2 grilled pav + 1 papad",
 	"isVeg": true,
 }
 	]
