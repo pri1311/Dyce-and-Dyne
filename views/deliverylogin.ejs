@@ -21,61 +21,60 @@
 
 	<body>
 		<div class="container-fluid">
-		
 			<div class="row">
 				<div class="col-sm-6 login-section-wrapper">
 					<div class="brand-wrapper">
 						<img src="./images/logo.png" alt="logo" class="logo" />
 					</div>
-                    <div class="container flash-container">
-				<% if(error && error.length> 0 ) { %>
-				<div class="row d-flex justify-content-between m-5">
-					<div
-						class="
-							alert alert-danger alert-dismissible
-							fade
-							show
-							text-center
-						"
-						role="alert"
-						style="width: 100%"
-					>
-						<%= error %>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+					<div class="container flash-container">
+						<% if(error && error.length> 0 ) { %>
+						<div class="row d-flex justify-content-between m-5">
+							<div
+								class="
+									alert alert-danger alert-dismissible
+									fade
+									show
+									text-center
+								"
+								role="alert"
+								style="width: 100%"
+							>
+								<%= error %>
+								<button
+									type="button"
+									class="close"
+									data-dismiss="alert"
+									aria-label="Close"
+								>
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<% } %> <% if(success && success.length> 0 ) { %>
+						<div class="row d-flex justify-content-between m-5">
+							<div
+								class="
+									alert alert-success alert-dismissible
+									fade
+									show
+									text-center
+								"
+								role="alert"
+								style="width: 100%"
+							>
+								<%= success %>
+								<button
+									type="button"
+									class="close"
+									data-dismiss="alert"
+									aria-label="Close"
+								>
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<% } %>
 					</div>
-				</div>
-				<% } %> <% if(success && success.length> 0 ) { %>
-				<div class="row d-flex justify-content-between m-5">
-					<div
-						class="
-							alert alert-success alert-dismissible
-							fade
-							show
-							text-center
-						"
-						role="alert"
-						style="width: 100%"
-					>
-						<%= success %>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				</div>
-				<% } %>
-			</div>
 					<div class="login-wrapper my-auto">
 						<h2 class="login-title">Welcome back!</h2>
 						<form action="/deliverylogin" method="post">
@@ -109,7 +108,7 @@
 						</form>
 
 						<p class="login-wrapper-footer-text">
-							Don't have an account for a Delivery Agent ?
+							New to our team?
 							<a href="/deliverysignup" class="text-reset"
 								><span style="text-decoration: underline"
 									>Register here</span
