@@ -293,7 +293,7 @@ function addWalletPoints(method) {
 	alert("Points saved to your wallet !");
 	if(method==1)
 	
-		location.reload();
+	location.href="/games";
 	else if(method==2)
 		location.href="/menu";
 }
