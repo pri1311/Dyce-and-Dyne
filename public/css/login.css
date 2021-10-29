@@ -55,8 +55,8 @@ body {
 	border: none;
 	border-bottom: 1px solid #e7e7e7;
 	border-radius: 0;
-	padding: 9px 5px;
-	min-height: 40px;
+	padding: 5px;
+	min-height: 2em;
 	font-size: 1.25em;
 	font-weight: normal;
 }

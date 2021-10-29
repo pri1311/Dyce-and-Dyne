@@ -22,61 +22,92 @@
 
 	<body>
 		<div class="container-fluid">
-			
 			<div class="row">
+				<div class="col-sm-6 px-0">
+					<div
+						style="
+							background-image: url('https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8cmVzdGF1cmFudHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80');
+							background-size: cover;
+							background-position: center bottom;
+							padding: 5em;
+							bottom: 0;
+							text-align: center;
+							align-items: flex-end;
+							justify-content: end;
+							display: flex;
+							flex-direction: column;
+						"
+						class="login-img"
+					>
+						<div style="background-color: black; padding: 2em">
+							<h2 style="color: white">
+								Eat, Play, & Have Fun!!
+							</h2>
+							<p style="color: white">
+								Whether you’re looking for biryani to feed your
+								desi cravings, soul comforting pizzas and
+								burgers, or even a salad with a cup of chai or
+								coffee,
+								<span style="color: #fdbb28">Dyce&Dyne</span> is
+								the only app you need for the quickest doorstep
+								delivery of your favourites.
+							</p>
+						</div>
+					</div>
+				</div>
 				<div class="col-sm-6 login-section-wrapper">
 					<div class="brand-wrapper">
 						<img src="./images/logo.png" alt="logo" class="logo" />
 					</div>
-                    <div class="container flash-container">
-				<% if(error && error.length> 0 ) { %>
-				<div class="row d-flex justify-content-between m-5">
-					<div
-						class="
-							alert alert-danger alert-dismissible
-							fade
-							show
-							text-center
-						"
-						role="alert"
-						style="width: 100%"
-					>
-						<%= error %>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
+					<div class="container flash-container">
+						<% if(error && error.length> 0 ) { %>
+						<div class="row d-flex justify-content-between m-5">
+							<div
+								class="
+									alert alert-danger alert-dismissible
+									fade
+									show
+									text-center
+								"
+								role="alert"
+								style="width: 100%"
+							>
+								<%= error %>
+								<button
+									type="button"
+									class="close"
+									data-dismiss="alert"
+									aria-label="Close"
+								>
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<% } %> <% if(success && success.length> 0 ) { %>
+						<div class="row d-flex justify-content-between m-5">
+							<div
+								class="
+									alert alert-success alert-dismissible
+									fade
+									show
+									text-center
+								"
+								role="alert"
+								style="width: 100%"
+							>
+								<%= success %>
+								<button
+									type="button"
+									class="close"
+									data-dismiss="alert"
+									aria-label="Close"
+								>
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<% } %>
 					</div>
-				</div>
-				<% } %> <% if(success && success.length> 0 ) { %>
-				<div class="row d-flex justify-content-between m-5">
-					<div
-						class="
-							alert alert-success alert-dismissible
-							fade
-							show
-							text-center
-						"
-						role="alert"
-						style="width: 100%"
-					>
-						<%= success %>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="alert"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				</div>
-				<% } %>
-			</div>
 					<div class="login-wrapper my-auto">
 						<h2 class="login-title">Welcome back!</h2>
 						<form action="/login" method="post">
@@ -117,37 +148,6 @@
 								></a
 							>
 						</p>
-					</div>
-				</div>
-				<div class="col-sm-6 px-0">
-					<div
-						style="
-							background-image: url('https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8cmVzdGF1cmFudHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80');
-							background-size: cover;
-							background-position: center bottom;
-							padding: 5em;
-							bottom: 0;
-							text-align: center;
-							align-items: flex-end;
-							justify-content: end;
-							display: flex;
-							flex-direction: column;
-						"
-						class="login-img"
-					>
-						<div style="background-color: black; padding: 2em">
-							<h2 style="color: white">
-								Eat, Play, & Have Fun!!
-							</h2>
-							<p style="color: white">
-								Lorem ipsum dolor sit amet, consectetur
-								adipisicing elit. In reiciendis minus minima
-								repudiandae, repellat, optio quisquam distinctio
-								dolorem alias exercitationem nostrum asperiores
-								nemo nam! Corporis laborum inventore odit
-								aliquid. Ducimus!
-							</p>
-						</div>
 					</div>
 				</div>
 			</div>
