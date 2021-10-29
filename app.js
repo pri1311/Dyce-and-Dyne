@@ -248,11 +248,11 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 				}
 				schedule.push(temp);
 			}
-			for (var k = 0; k < schedule.length; k++) {
-				for (var j = 0; j < schedule[k].length; j++)
-					console.log(schedule[k][j]["total"]);
-				console.log();
-			}
+			// for (var k = 0; k < schedule.length; k++) {
+			// 	for (var j = 0; j < schedule[k].length; j++)
+			// 		console.log(schedule[k][j]["total"]);
+			// 	console.log();
+			// }
 			var allOrders = schedule[req.params.deliveryNo];
 
 			NO_OF_CHILDREN = 0;
@@ -303,7 +303,7 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 			let cords = [];
 			let location = [];
 			for (var i = 0; i < N - 1; i++) {
-				console.log(ADDRESS[bestTour[i]]);
+				
 				location.push(ADDRESS[bestTour[i]]);
 				cords.push([
 					CORDINATES[bestTour[i]].longitude,
@@ -373,14 +373,12 @@ app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 				console.log();
 			}
 
-			//res.send(schedule);
 			res.render("delivery", { schedule: schedule, cost: cost });
 		}
 	}).sort({ date: 1 });
 });
 
 app.get("/changeDeliveryStatus/:Orderid", function (req, res) {
-	// res.json("0");
 	Order.findById(req.params.Orderid, function (err, foundOrder) {
 		if (err) {
 			console.log(err);
@@ -425,7 +423,7 @@ app.get("/", (req, res) => {
     "category": "PavBhaji",
     "image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/zuyb0ntyznxwu8vvclzx",
     "cost": 240,
-    "desc": "Maska masala tadka bhaji + 2 grilled pav + 1 papad + onion-lemon (not available in jain)",
+    "desc": "Maska masala tadka bhaji + 2 grilled pav + 1 papad",
 	"isVeg": true,
 }
 	]
@@ -472,7 +470,7 @@ app.get("/cart", isLoggedIn, (req, res) => {
 				return 0;
 				});
 			
-			res.render("cart", { items: cart, total: founduser.cart.total });
+			res.render("cart", { items: cart,wallet:founduser.wallet, total: founduser.cart.total,amountPayable : founduser.cart.amountPayable,discountApplied : founduser.cart.discountApplied });
 		}
 	});
 });
@@ -502,7 +500,7 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 							req.params.id.toString()
 						) {
 							f = 1;
-							console.log("1111");
+							
 							break;
 						}
 					}
@@ -519,12 +517,12 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 						);
 						founduser.save();
 					} else {
-						console.log("yquqiqoq");
+						
 						var q = founduser.cart.foodItems[i].qty;
-						console.log(q);
-						console.log(founduser.cart.foodItems[i].qty);
+						
+						
 						founduser.cart.foodItems[i].qty = q + 1;
-						console.log(founduser.cart.foodItems[i].qty);
+						
 						founduser.cart.amountPayable = Math.max(
 							0,
 							founduser.cart.total -
@@ -536,7 +534,7 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 						);
 						founduser.markModified("cart");
 						founduser.save();
-						console.log(founduser.cart.foodItems);
+						
 					}
 
 					//   founduser.wallet += 160;
@@ -561,7 +559,7 @@ app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 					return res.redirect("back");
 				} else {
 					var index = -1;
-					console.log(foundItem._id);
+					
 					for (var i = 0; i < founduser.cart.foodItems.length; i++) {
 						if (
 							founduser.cart.foodItems[i]._id.toString() ==
@@ -623,7 +621,7 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 					return res.redirect("back");
 				} else {
 					var index = -1;
-					console.log(foundItem._id);
+					
 					for (var i = 0; i < founduser.cart.foodItems.length; i++) {
 						if (
 							founduser.cart.foodItems[i]._id.toString() ==
