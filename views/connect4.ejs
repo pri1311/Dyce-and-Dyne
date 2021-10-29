@@ -74,7 +74,7 @@
 							data-dismiss="modal"
 							onclick="addWalletPoints(1)"
 						>
-							Save Points					
+							Save Points
 						</button>
 						<button
 							type="button"
@@ -155,7 +155,79 @@
 								<div class="blurb"></div>
 								<div class="outlook"></div>
 								<div class="gameinfo">
-									<button>How to play</button>
+									<!-- Button trigger modal -->
+									<button
+										type="button"
+										class="btn btn-primary gamebutton"
+										data-toggle="modal"
+										data-target="#exampleModalLong"
+									>
+										How to Play
+									</button>
+
+									<!-- Modal -->
+									<div
+										class="modal fade"
+										id="exampleModalLong"
+										tabindex="-1"
+										role="dialog"
+										aria-labelledby="exampleModalLongTitle"
+										aria-hidden="true"
+									>
+										<div
+											class="modal-dialog"
+											role="document"
+										>
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5
+														class="modal-title"
+														id="exampleModalLongTitle"
+													>
+														SlidingPuzzle
+													</h5>
+												</div>
+												<div class="modal-body">
+													ConnectFour Rules <br />1.
+													Point the cursor over the
+													row you wish to drop your
+													piece in. <br />2. Left
+													click to drop your piece
+													<br />3. When you can
+													connect four pieces
+													vertically, horizontally or
+													diagonally you win.
+													<br />
+													<br />
+													Each game you win against
+													our bot, awards you points.
+													Points are awarded as
+													follows:
+													<br />
+													Level 1: 20 points
+													<br />
+													Level 2: 40 points
+													<br />
+													Level 3: 60 points
+													<br />
+													Level 4: 80 points
+													<br />
+													Level 5: 100 points
+												</div>
+												<div class="modal-footer">
+													<button
+														type="button"
+														class="
+															btn btn-secondary
+														"
+														data-dismiss="modal"
+													>
+														Close
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
