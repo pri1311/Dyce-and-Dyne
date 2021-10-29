@@ -11,9 +11,11 @@ aside {
 }
 
 aside .nav-link {
-	font-size: 1.25em;
+	font-size: 1.30em;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	
+	
 }
 aside nav {
 	font-size: 1 rgb(255, 255, 255);
@@ -23,6 +25,7 @@ aside nav {
 	list-style: none;
 }
 aside nav a .nav-link {
+	/* font-weight:bold ; */
 	color: rgb(0, 0, 0);
 	position: relative;
 	text-decoration: none;
@@ -30,21 +33,26 @@ aside nav a .nav-link {
 	padding: 1em 0 1em 1em;
 }
 aside nav a.nav-link:hover {
-	color: #ffde6b;
+	color: rgba(255, 187, 0, 0.719);
 	border-radius: 0.5em 0em 0em 0.5em;
 	text-decoration: none;
-	border-right: 4px solid rgba(251, 255, 0, 0.719);
+	border-right: 4px solid rgba(255, 187, 0, 0.719);
+	font-weight: bold;
+	box-shadow: 0px 1px 3px grey;
 }
 
 aside nav a.nav-link:hover {
+	
 	text-decoration: none;
 }
 
 .active {
-	color: #ffde6b;
+	color: rgba(255, 187, 0, 0.719);
 	border-radius: 0.5em 0em 0em 0.5em;
 	text-decoration: none;
-	border-right: 4px solid rgba(251, 255, 0, 0.719);
+	border-right: 4px solid rgba(255, 187, 0, 0.719);
+	box-shadow: 0px 1px 3px grey;
+	font-weight: bold;
 }
 
 aside nav a {

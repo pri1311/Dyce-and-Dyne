@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <nav  id="navbar" class="navbar navbar-expand-lg navbar-light">
+    <nav  id="navbar" class="navbar navbar-expand-lg navbar-light" style="box-shadow:0px 3px 4px grey;">
 	  <br />
   <div class="container">
     <a
@@ -30,7 +30,7 @@
       href="/"
       style="font-weight: 900; font-size: xx-large; color: white"
       ><img
-        height="50"
+        height="60"
         src="https://i.ibb.co/4myjK7k/Screenshot-450.png"
         alt=""
     /></a>
@@ -45,7 +45,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link link-navbar" href="/"
@@ -61,22 +61,8 @@
 		<li class="nav-item">
           <a class="nav-link link-navbar" href="/profile">My Orders</a>
         </li>
-		<li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle link-navbar"
-            href="#"
-            id="navbarDropdown1"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <i> Games </i>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-            <a class="dropdown-item link-navbar" href="/8puzzle">8 Puzzle</a>
-            <a class="dropdown-item link-navbar" href="/connect4">Connect Four</a>
-          </div>
+        <li class="nav-item">
+          <a class="nav-link link-navbar" href="/games">Games</a>
         </li>
         <% if(!currentUser) {%>
         <li class="nav-item">
@@ -109,13 +95,6 @@
   </div>
 </nav>
     <title>Dyce&Dyne | Menu</title>
-    
-    <link rel="stylesheet" href="/stylesheets/store.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-
- 
-
-
     <div class=" container flash-container fixed-top">
         <% if(error && error.length> 0 ) { %>
             <div class="row d-flex justify-content-between m-2">
@@ -202,19 +181,19 @@
                                                         <% if(q == 0)  {%>
                                                             <div class="col-sm-5 col-lg-3">
                                                                 <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                                    <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                                    <button type="submit" class="btn btn-outline-warning rounded-lg ">Add to cart</button>
                                                                 </form>
                                                             </div>
                                                         <% } else { %>
                                                             
                                                         <div class="col-sm-5 col-lg-3 d-flex">
                                                             <form action="/cartpage/<%= allItems[i]._id %>?_method=DELETE" method="post">
-                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-primary rounded-lg">-</button>
+                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-warning rounded-lg">-</button>
                                                             </form>
                                                             
                                                             <input type="text" readonly value="<%= q %>"/>
                                                             <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-primary rounded-lg">+</button>
+                                                                <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-warning rounded-lg">+</button>
                                                             </form>
                                                             
                                                         </div>
@@ -222,14 +201,14 @@
                                                     <% } else { %>
                                                         <div class="col-sm-5 col-lg-3">
                                                                 <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                                    <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                                    <button type="submit" class="btn btn-outline-warning rounded-lg ">Add to cart</button>
                                                                 </form>
                                                             </div>
                                                     <% } %>
                                                 <% } else { %>
                                                     <div class="col-sm-5 col-lg-3">
                                                         <form action="/cart/<%= allItems[i]._id.toString() %>" method="post">
-                                                            <button type="submit" class="btn btn-outline-primary rounded-lg ">Add to cart</button>
+                                                            <button type="submit" class="btn btn-outline-warning rounded-lg ">Add to cart</button>
                                                         </form>
                                                     </div>
                                                 <% } %>

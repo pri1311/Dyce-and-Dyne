@@ -202,7 +202,7 @@ function clickTile(row, column) {
 		}
 	}
 }
-function addWalletPoints() {
+function addWalletPoints(method) {
 	var points = parseInt((AI_moves * 100) / player_moves);
 	axios({
 		method: "post",
@@ -212,6 +212,12 @@ function addWalletPoints() {
 			game: "/8puzzle",
 		},
 	});
-	location.reload();
+	alert("Points saved to your wallet !");
+	if(method==1)
+	
+		location.reload();
+	else if(method==2)
+		location.href="/menu";	
+
 }
 getNewGame();

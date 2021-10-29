@@ -16,6 +16,8 @@ var orderSchema = new mongoose.Schema({
   },
   paymentMode: String,
   isDelivered: Boolean,
+  discountApplied: Number,
+  cartTotal: Number,
 });
 
 module.exports = mongoose.model("Order", orderSchema);

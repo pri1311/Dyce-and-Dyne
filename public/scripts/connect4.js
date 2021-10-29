@@ -280,7 +280,7 @@ function indexToPixels(index) {
 	return index * 61 + 1 + "px";
 }
 
-function addWalletPoints() {
+function addWalletPoints(method) {
 	var points = 20 * (maxDepthGlobal - 1);
 	axios({
 		method: "post",
@@ -290,5 +290,10 @@ function addWalletPoints() {
 			game: "/connect4",
 		},
 	});
-	location.reload();
+	alert("Points saved to your wallet !");
+	if(method==1)
+	
+		location.reload();
+	else if(method==2)
+		location.href="/menu";
 }

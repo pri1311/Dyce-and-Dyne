@@ -320,7 +320,7 @@ app.get("/tsp/:deliveryNo", async function (req, res) {
 	}).sort({ date: 1 });
 });
 
-app.get("/delivery", function (req, res) {
+app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 	Order.find({ isDelivered: false }, function (err, allOrders) {
 		if (err) console.log(err);
 		else {
@@ -409,11 +409,22 @@ app.get("/menu", (req, res) => {
 });
 
 app.get("/cart", isLoggedIn, (req, res) => {
-	User.findById(req.user._id, function (err, founduser) {
+	User.findById(req.user._id, async function (err, founduser) {
 		if (err) {
 			console.log(err);
 			return res.redirect("back");
 		} else {
+			founduser.cart.amountPayable = Math.max(
+				0,
+				founduser.cart.total -
+					Math.floor(founduser.wallet / 100),
+			);
+			founduser.cart.discountApplied = Math.min(
+				founduser.cart.total,
+				Math.floor(founduser.wallet / 100),
+			);
+			founduser.markModified('cart');
+			await founduser.save()
 			cart = founduser.cart.foodItems.sort(function (a, b) {
 				var nameA = a.title.toUpperCase();
 				var nameB = b.title.toUpperCase();
@@ -423,9 +434,9 @@ app.get("/cart", isLoggedIn, (req, res) => {
 				if (nameA > nameB) {
 					return 1;
 				}
-
 				return 0;
-			});
+				});
+			
 			res.render("cart", { items: cart, total: founduser.cart.total });
 		}
 	});
@@ -732,8 +743,8 @@ app.post("/api/payment/verify", (req, res) => {
 
 app.post("/afterOrderPlaced", (req, res) => {
 	if (req.isAuthenticated()) {
-		console.log("hit!");
-		console.log(req.body);
+		// console.log("hit!");
+		// console.log(req.body);
 		User.findById(req.user._id, (err, founduser) => {
 			if (err) console.log(err);
 			else {
@@ -750,6 +761,8 @@ app.post("/afterOrderPlaced", (req, res) => {
 					},
 					paymentMode: req.body.paymentMode,
 					isDelivered: false,
+					discountApplied: founduser.cart.discountApplied,
+					cartTotal: req.user.cart.total,
 				});
 				Order.create(new_order, function (err, order) {
 					if (err) {
@@ -804,6 +817,11 @@ app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 		}
 	});
 });
+
+
+app.get('/games',function(req,res){
+	res.render("games");
+})
 
 //-----------------------------AUTH--------------------------------------
 

@@ -186,8 +186,7 @@
             ( <%= currentUser.cart.discountApplied * 100 %> Points )
           </div>
           <div>
-            <b> Wallet Balance </b> : <%= currentUser.wallet -
-            currentUser.cart.discountApplied * 100 %> Points
+            <b> Wallet Balance </b> : <%= currentUser.wallet - (currentUser.cart.discountApplied * 100) %> Points
           </div>
           <div>
             <b> Grand Subtotal </b> : Rs. <%= currentUser.cart.amountPayable
