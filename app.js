@@ -470,7 +470,7 @@ app.get("/cart", isLoggedIn, (req, res) => {
 				return 0;
 				});
 			
-			res.render("cart", { items: cart, total: founduser.cart.total });
+			res.render("cart", { items: cart,wallet:founduser.wallet, total: founduser.cart.total,amountPayable : founduser.cart.amountPayable,discountApplied : founduser.cart.discountApplied });
 		}
 	});
 });
