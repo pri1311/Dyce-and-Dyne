@@ -209,7 +209,7 @@ const _addressToLatLng = async (address) => {
 
 //=============================== ROUTES ===============================
 
-app.get("/tsp/:deliveryNo", async function (req, res) {
+app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 	var currdt = Date.now();
 	Order.find({ isDelivered: false }, async function (err, allOrders) {
 		if (err) console.log(err);
@@ -394,7 +394,42 @@ app.get("/changeDeliveryStatus/:Orderid", function (req, res) {
 });
 
 app.get("/", (req, res) => {
-	res.render("index");
+	var recItems = [
+		{
+		"_id": "617bbe86b88aa0244466d9be",
+		"title": "Paneer Chilli Dry",
+		"category": "starters",
+		"image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/i9z0ydh86tdfxcpvqtck",
+		"cost": 219,
+		"desc": "Chilly paneer is indo Chinese starter or Appetizer garlic",
+		"isVeg": true,
+	},{
+		"_id": "617bbe86b88aa0244466d9d1",
+		"title": "American Club Sandwich",
+		"category": "sandwich",
+		"image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2013/2/13/0/FN_FNK-Veggie-Lovers-Club-Sandwich_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371614457375.jpeg",
+		"cost": 290,
+		"desc": "Cottage cheese, mayo, and corn coleslaw salad.",
+		"isVeg": true,
+	},{
+    	"_id":  "617bbe86b88aa0244466d9d4",
+		"title": "Exotica Pizza",
+		"category": "Italian",
+		"image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/afxqbzk9aqbnhbbwcaig",
+		"cost": 250,
+		"desc": "Scrumptious pizza filled with exotic vegetables, topped with eons of cheese",
+		"isVeg": true,
+	},{
+    "_id": "617bbe86b88aa0244466d9dd",
+    "title": "Mumbai Tadka Grilled Pav Bhaji",
+    "category": "PavBhaji",
+    "image": "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/zuyb0ntyznxwu8vvclzx",
+    "cost": 240,
+    "desc": "Maska masala tadka bhaji + 2 grilled pav + 1 papad + onion-lemon (not available in jain)",
+	"isVeg": true,
+}
+	]
+	res.render("index",{topItems : recItems});
 });
 
 app.get("/menu", (req, res) => {
@@ -819,7 +854,7 @@ app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 });
 
 
-app.get('/games',function(req,res){
+app.get('/games',isLoggedIn,function(req,res){
 	res.render("games");
 })
 

@@ -11,6 +11,7 @@
     <!-- <link rel="stylesheet" href="/stylesheets/home.css"> -->
     <link rel="stylesheet" href="/css/navbar.css">
         <link rel="stylesheet" href="/css/menu.css">
+        <link rel="icon" href="/images/logo.png" type="image/x-icon">
 <style>
     html{
         scroll-behavior: smooth;
@@ -136,20 +137,19 @@
                 <!-- <ul> -->
                 <a class="nav-link" href="#starters">Starters</a>
                 <a class="nav-link" href="#sandwich">Sandwiches</a>
-                <a class="nav-link" href="#">Pav Bhaji</a>
-                <a class="nav-link" href="#">Breads</a>
-                <a class="nav-link" href="#">North Indian</a>
-                <a class="nav-link" href="#">Rice & Noodes</a>
-                <a class="nav-link" href="#">Bevrages</a>
-                <a class="nav-link" href="#">Dessert</a>
-                <a class="nav-link" href="#">Extras</a>
+                <a class="nav-link" href="#PavBhaji">Pav Bhaji</a>
+                <a class="nav-link" href="#Italian">Italian</a>
+                <a class="nav-link" href="#Continental">Continental</a>
+                <a class="nav-link" href="#Beverages">Beverages</a>
+                <a class="nav-link" href="#Desserts">Dessert</a>
+                
                 <!-- </ul> -->
             </nav>
             </aside>
         </div>
         <div class="col-lg-9 d-flex justify-content-center">
             <div data-spy="scroll" data-target="#menu-sidebar" data-offset="0">
-                <% categories = ['starters', 'sandwich'] %>
+                <% categories = ['starters', 'sandwich','PavBhaji','Italian','Continental','Beverages','Desserts'] %>
                 <% categories.forEach(category => { %>
                     <div id="<%= category %>" class="my-5 " >
                         <div class="h2 text-left sticky-top bg-white p-3"><%= category.charAt(0).toUpperCase() + category.slice(1); %></div>
