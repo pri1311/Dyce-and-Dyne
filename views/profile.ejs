@@ -76,13 +76,19 @@
 							>
 								<%= currentUser.name %>
 							</h1>
-							<p class="lead mb-0">
+							<p class="lead mb-0 ">
 								Wallet Points: <%= currentUser.wallet %> points
 							</p>
 							<p class="lead">
 								Total Orders: <%= currentUser.orders.length %>
 							</p>
+							<% if(orders.length==0) {%>
+								<p style="font-size: 24px;" class="lead mb-0 font-weight-bold">You have not placed any orders yet :(</p>
+								<p style="font-size: 20px;" class="lead mt-3 text-muted">To place an order, go the menu page and add anything you like to the cart.</p>
+								<a class="btn btn-outline-warning" href="/menu" >MENU</a>
+							<% } else {%>
 							<p class="lead mb-0">Order History:</p>
+							<% } %>
 						</div>
 					</div>
 
@@ -145,12 +151,6 @@
 				</div>
 			</div>
 		</div>
-
-		<% if(orders.length == 0) { %>
-		<p>No orders placed yet</p>
-		<% } else { %>
-		<p><%= orders[0].total %></p>
-		<% } %>
 		<script
 			src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
