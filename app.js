@@ -24,8 +24,7 @@ const User = require("./models/user");
 const FoodItem = require("./models/foodItem");
 const Order = require("./models/order");
 
-mongoose.connect(
-	"mongodb+srv://admin:admin@cluster0.o8tac.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+mongoose.connect( process.env.MONGO_URI,
 	{
 		useNewUrlParser: true,
 		useCreateIndex: true,
@@ -1068,6 +1067,7 @@ function isDeliveryAgentLoggedIn(req, res, next) {
 	}
 }
 
-app.listen(3000, () => {
-	console.log("Serving on port 3000");
+var port = process.env.PORT || 3000
+app.listen(port, () => {
+	console.log("Serving on port "+port);
 });
