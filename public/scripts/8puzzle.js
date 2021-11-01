@@ -11,12 +11,16 @@ var savedConfigurations = [
 	[9, 3, 1, 6, 7, 8, 4, 2, 5],
 ];
 var movesButton = document.getElementById("moves");
+
+// Swap the classes of tiles 
 function swapTiles(cell1, cell2) {
 	movesButton.innerHTML = "Moves: " + String(player_moves);
 	var temp = document.getElementById(cell1).className;
 	document.getElementById(cell1).className =
 		document.getElementById(cell2).className;
 	document.getElementById(cell2).className = temp;
+
+	// If player wins, calculate points earned and add it to users wallet.
 	if (goalTest()) {
 		var points = parseInt((AI_moves * 100) / player_moves);
 		document.getElementById("winbutton").click();
@@ -24,6 +28,8 @@ function swapTiles(cell1, cell2) {
 			"Wuhooooo! You earned " + points + " points";
 	}
 }
+
+// Count the number of inversions.
 let checkInversion = (arr) => {
 	let invCount = 0;
 	for (let i = 0; i < arr.length; i++) {
@@ -36,6 +42,8 @@ let checkInversion = (arr) => {
 	return invCount;
 };
 
+
+// Check if the board is solvable.
 let isSolvable = (numberArr) => {
 	let inversions = checkInversion(numberArr);
 	if (inversions % 2 == 0) {
