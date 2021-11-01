@@ -126,8 +126,17 @@
 											`${date}/${month}/${year}`%> <% var
 											time =
 											orders[i].date.toLocaleTimeString();
-											%> <%= d %>,
-											<small><%= time %></small>
+											%>
+											<% var currentTime = orders[i].date; %>
+
+											<% var currentOffset = currentTime.getTimezoneOffset(); %>
+
+											<% var ISTOffset = 330; %>
+
+											<% var ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000); %> 
+											<%= d %>,
+											<!-- <small><%= time %></small> -->
+											<small><%= ISTTime.toLocaleTimeString() %></small>
 										</h3>
 										<span class="small text-gray"
 											>Order total: INR <%=
