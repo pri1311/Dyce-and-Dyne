@@ -11,9 +11,9 @@ var userSchema = new mongoose.Schema({
   addresses: [],
   cart: {
     foodItems: [],
-    total: Number,
-    amountPayable: Number,
-    discountApplied: Number,
+    total: { type: Number, default: 0 },
+    amountPayable: { type: Number, default: 0 },
+    discountApplied: { type: Number, default: 0 },
   },
   isCustomer: Boolean,
 });
