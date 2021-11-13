@@ -231,41 +231,7 @@ body {
 		<div class="container">
 			<div id="map" class="row"></div>
 		</div>
-            <!-- <div class="container p-2" style="margin-top:580px; border:1px solid grey; border-radius:20px">
-            <h2 class="text-center">DELIVERY STATUS </h2>  
-            <hr>
-            <% var i = 0 %>
-            <% schedule.forEach((x)=>{ %>
-                <div class="container p-3" style="margin-bottom:10px; box-shadow:1px 4px 4px grey; background-color:rgb(235, 235, 235)">
-                    <div class="row">
-                        <div class="col-3">
-                            <b>Order ID:</b>
-                            <br>
-                            <small><%= x._id %></small>
-                        </div>
-                        <div class="col-2">
-                            <b>AMOUNT:</b>
-                            <br>
-                            <small><%= x.total %></small>
-                        </div>
-                        <div class="col-4">
-                            <b>Address:</b>
-                            <br>
-                            <small><%= x.user.fullAddress %></small>
-                        </div>
-                        <div class="col-3">
-                            <b>Status</b>
-                            <br>
-                            <% if(x.isDelivered===true){ %>
-                                <button  id="<%= x._id %>b" class="btn disabled btn-success btn-md">Delivered</button>
-                            <% }else{ %>
-                                <button onclick="changeStatus('<%=  x._id.toString() %>')" id="<%= x._id %>a" class="btn btn-outline-success btn-md">Delivering..</button>
-                            <% } %>
-                        </div>
-                    </div>
-                </div> 
-            <%}) %>
-        </div> -->
+            
 		<div class="container" style="margin-top:500px">
 			<div id="timeline-container">
 				<div class="inner-container">
@@ -309,8 +275,8 @@ body {
 			crossorigin="anonymous"
 		></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-         <script>
-            //var n = <%= tspno %>  
+        <!-- Change status from not delivered-> delivered. -->
+		<script>
             function changeStatus(id)
             {
 
@@ -319,7 +285,6 @@ body {
                  axios.get('/changeDeliveryStatus/'+id)
                     .then((resp)=>{
                     if(resp.data.status == "OK"){
-                        console.log("BHAVYA IS HOT")
                         var el=document.getElementById(id+'a');
                         el.innerText="Delivered"
                         el.classList.add("btn-success");
@@ -337,10 +302,6 @@ body {
         </script>
 
 		<script>
-
-
-
-
 			// Add your access token
 			mapboxgl.accessToken ="pk.eyJ1IjoiYmhhdnlhMDkyIiwiYSI6ImNrb2xlNWUzbjFiNjAydnE0bXpsbG13MGcifQ.jik4Q9NnhmABl1qhYKt7ZA";
 			const DDL=[72.84167,19.21333];
@@ -353,10 +314,7 @@ body {
 			    zoom: 12, // starting zoom
 
 			});
-
-
-
-
+			//Directions API
 			const directions = new MapboxDirections({
 			    accessToken: mapboxgl.accessToken,
 			    unit: "metric",

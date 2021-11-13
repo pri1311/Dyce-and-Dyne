@@ -71,7 +71,8 @@ app.use(express.static(__dirname + "/public"));
 const geolib = require("geolib");
 const axios = require("axios");
 
-//======================= TSP FUNCTIONS  ========================================
+//======================= TSP FUNCTIONS  =========================================================
+
 var NO_OF_CHILDREN = 0;
 var N = 0;
 var CITIES = [];
@@ -80,6 +81,7 @@ var CORDINATES = [];
 var GENE_POOL = [];
 var PARENTS = [];
 
+//Generates a random initial population avoiding duplicates.
 function create_initial_population() {
 	for (var i = 0; i < NO_OF_CHILDREN; i++) {
 		var tour = [];
@@ -90,6 +92,8 @@ function create_initial_population() {
 		GENE_POOL.push(tour);
 	}
 }
+
+//Calculating fitness value of the tour using GEOLIB API.
 function calculate_fitness(arr) {
 	var sum = 0;
 	for (var i = 1; i < arr.length; i++)
@@ -109,6 +113,9 @@ function calculate_fitness(arr) {
 		);
 	return sum;
 }
+
+//Uses Bubble sort to sort all the genes in the genepool. 
+//Prevents fitter parents and select the best among all.
 function select_best_genes() {
 	var pq = [];
 	for (var i = 0; i < GENE_POOL.length; i++)
@@ -122,6 +129,8 @@ function select_best_genes() {
 	GENE_POOL = [];
 	for (var i = 0; i < NO_OF_CHILDREN; i++) GENE_POOL[i] = PARENTS[i];
 }
+
+//Code for Ordered CrossOver.
 function getChild(p1, p2, l) {
 	let c1 = [],
 		c2 = [];
@@ -145,6 +154,8 @@ function getChild(p1, p2, l) {
 
 	return [c1, c2];
 }
+
+//Every Parent mates with every other parent.All resulting children are added to the genePool.
 function crossover() {
 	const len = Math.log2(N);
 	offsprings = [];
@@ -159,6 +170,8 @@ function crossover() {
 		}
 	}
 }
+
+//Randomly select log2(n) genes and add 2 inversions to maintain gene variability.
 function mutation() {
 	for (var i = 0; i < Math.floor(Math.log2(NO_OF_CHILDREN)); i++) {
 		for (var j = 0; j < 2; j++) {
@@ -172,6 +185,8 @@ function mutation() {
 		}
 	}
 }
+
+//Driver for the TSP.
 function genetic_TSP() {
 	create_initial_population();
 	let iterations = 0;
@@ -185,6 +200,8 @@ function genetic_TSP() {
 	select_best_genes();
 	return [PARENTS[0], calculate_fitness(PARENTS[0])];
 }
+
+// MAPBOX API call returns the latlng of the given address.
 const getAdd = async (add) => {
 	try {
 		return await axios.get(
@@ -196,6 +213,8 @@ const getAdd = async (add) => {
 		console.error(error);
 	}
 };
+
+//Converts the string address to latlng tuple.
 const _addressToLatLng = async (address) => {
 	const resp = await getAdd(address);
 	if (resp.data) {
@@ -206,31 +225,20 @@ const _addressToLatLng = async (address) => {
 	}
 };
 
-//=============================== ROUTES ===============================
+//=============================== ROUTES ==========================================
 
+
+
+// TSP & DELIVERY  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//Depending upon the chose delivery slot, call for the TSP method which returns the 
+//best possible route for the drop locations
 app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 	var currdt = Date.now();
 	Order.find({ isDelivered: false }, async function (err, allOrders) {
 		if (err) console.log(err);
 		else {
-			// var map = {};
-			// allOrders.forEach((order) => {
-			// 	var diff = currdt - order.date;
-			// 	diff = diff / 1000;
-
-			// 	var x = Math.ceil(diff / 1200);
-			// 	if (map[x] === undefined) map[x] = [];
-			// 	map[x].push(order);
-			// });
-			// var schedule = [];
-			// var cost = [];
-			// for (var key in map) {
-			// 	var temp = [];
-			// 	for (var a in map[key]) {
-			// 		temp.push(map[key][a]);
-			// 	}
-			// 	schedule.push(temp);
-			// }
 			var map = {};
 			var schedule = [];
 			for (var i = 0; i < allOrders.length; i++) {
@@ -247,11 +255,6 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 				}
 				schedule.push(temp);
 			}
-			// for (var k = 0; k < schedule.length; k++) {
-			// 	for (var j = 0; j < schedule[k].length; j++)
-			// 		console.log(schedule[k][j]["total"]);
-			// 	console.log();
-			// }
 			var allOrders = schedule[req.params.deliveryNo];
 
 			NO_OF_CHILDREN = 0;
@@ -319,6 +322,7 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 	}).sort({ date: 1 });
 });
 
+//Shows all the 20minute  slots available for delivery
 app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 	Order.find({ isDelivered: false }, function (err, allOrders) {
 		if (err) console.log(err);
@@ -339,26 +343,7 @@ app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 				}
 				schedule.push(temp);
 			}
-			// allOrders.forEach((order) => {
-			// 	var diff = currdt - order.date;
-			// 	diff = diff / 1000;
-
-			// 	var x = Math.ceil(diff / 1200);
-			// 	if (map[x] === undefined) map[x] = [];
-			// 	map[x].push(order);
-			// });
-			// var schedule = [];
-			// var cost = [];
-			// for (var key in map) {
-			// 	var temp = [];
-			// 	var sum = 0;
-			// 	for (var a in map[key]) {
-			// 		sum = sum + map[key][a]["total"];
-			// 		temp.push(map[key][a]);
-			// 	}
-			// 	cost.push(sum);
-			// 	schedule.push(temp);
-			// }
+			
 			var cost = [];
 			for (var i = 0; i < schedule.length; i++) {
 				var sum = 0;
@@ -377,6 +362,7 @@ app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 	}).sort({ date: 1 });
 });
 
+//Changes the status of any delivery from under delivery to delivered.
 app.get("/changeDeliveryStatus/:Orderid", function (req, res) {
 	Order.findById(req.params.Orderid, function (err, foundOrder) {
 		if (err) {
@@ -389,6 +375,9 @@ app.get("/changeDeliveryStatus/:Orderid", function (req, res) {
 		}
 	});
 });
+
+
+// HOME PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 app.get("/", (req, res) => {
 	var recItems = [
@@ -429,6 +418,9 @@ app.get("/", (req, res) => {
 	res.render("index",{topItems : recItems});
 });
 
+// MENU & CART ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//Renders the list of all menu items
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
 		if (err) {
@@ -440,6 +432,7 @@ app.get("/menu", (req, res) => {
 	});
 });
 
+//Renders all food items currently in the cart
 app.get("/cart", isLoggedIn, (req, res) => {
 	User.findById(req.user._id, async function (err, founduser) {
 		if (err) {
@@ -474,6 +467,8 @@ app.get("/cart", isLoggedIn, (req, res) => {
 	});
 });
 
+
+//Add an item to cart
 app.post("/cart/:id", isLoggedIn, function (req, res) {
 	User.findById(req.user._id, function (err, founduser) {
 		if (err) {
@@ -536,8 +531,6 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 						
 					}
 
-					//   founduser.wallet += 160;
-
 					req.flash("success", foundItem.title + " added to cart.");
 					return res.redirect("/menu#" + foundItem.category);
 				}
@@ -546,6 +539,7 @@ app.post("/cart/:id", isLoggedIn, function (req, res) {
 	});
 });
 
+//Delete an item from cart
 app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 	User.findById(req.user._id, function (err, founduser) {
 		if (err) {
@@ -597,10 +591,7 @@ app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
 					);
 					founduser.markModified('cart');
 					founduser.save();
-					// req.flash(
-					// 	"success",
-					// 	foundItem.title + " removed from cart.",
-					// );
+					
 					return res.redirect("/menu#" + foundItem.category);
 				}
 			});
@@ -652,10 +643,7 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 					);
 					founduser.markModified('cart');
 					founduser.save();
-					// req.flash(
-					// 	"success",
-					// 	foundItem.title + " removed from cart.",
-					// );
+					
 					return res.redirect("/cart");
 				}
 			});
@@ -663,30 +651,7 @@ app.delete("/cart/:id", isLoggedIn, function (req, res) {
 	});
 });
 
-app.get("/profile", isLoggedIn, function (req, res) {
-	User.findById(req.user._id, function (err, foundUser) {
-		if (err) {
-			console.log(err);
-			return res.redirect("back");
-		} else {
-			var orders = foundUser.orders;
-			orders.sort(function (a, b) {
-				return new Date(b.date) - new Date(a.date);
-			});
-
-			res.render("profile", { orders: orders });
-		}
-	});
-});
-
-app.get("/8puzzle", isLoggedIn, function (req, res) {
-	res.render("8puzzle");
-});
-
-app.get("/connect4", isLoggedIn, function (req, res) {
-	res.render("connect4");
-});
-
+//Add earned points to the wallet
 app.post("/addWalletPoints", isLoggedIn, function (req, res) {
 	User.findById(req.user._id, function (err, foundUser) {
 		if (err) {
@@ -709,6 +674,7 @@ app.post("/addWalletPoints", isLoggedIn, function (req, res) {
 	});
 });
 
+//Order food via COD
 app.get("/ordercod", isLoggedIn, function (req, res) {
 	cart = req.user.cart.foodItems.sort(function (a, b) {
 		var nameA = a.title.toUpperCase();
@@ -746,6 +712,7 @@ app.get("/ordercard", isLoggedIn, function (req, res) {
 	});
 });
 
+//Razorpay integrations.
 app.post("/api/payment/order", (req, res) => {
 	params = req.body;
 	instance.orders
@@ -775,8 +742,6 @@ app.post("/api/payment/verify", (req, res) => {
 
 app.post("/afterOrderPlaced", (req, res) => {
 	if (req.isAuthenticated()) {
-		// console.log("hit!");
-		// console.log(req.body);
 		User.findById(req.user._id, (err, founduser) => {
 			if (err) console.log(err);
 			else {
@@ -800,16 +765,16 @@ app.post("/afterOrderPlaced", (req, res) => {
 					if (err) {
 						console.log(err);
 					} else {
-						// console.log(FoodItem);
+						
 						var f = 0;
 						founduser.addresses.forEach((address) => {
 							if (address.fullAddress == inputAddress) {
-								// console.log("000000");
+								
 								f = 1;
 							}
 						});
 						if (f == 0) {
-							//   console.log("01011010");
+			
 							var addressObj = {
 								fullAddress: inputAddress,
 								flatwing: req.body.flatwing,
@@ -839,6 +804,7 @@ app.post("/afterOrderPlaced", (req, res) => {
 	}
 });
 
+//Show status of the order.
 app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 	Order.find({ _id: req.params.orderID }, (err, foundOrder) => {
 		if (err) console.log(err);
@@ -851,11 +817,42 @@ app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 });
 
 
+// PROFILE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app.get("/profile", isLoggedIn, function (req, res) {
+	User.findById(req.user._id, function (err, foundUser) {
+		if (err) {
+			console.log(err);
+			return res.redirect("back");
+		} else {
+			var orders = foundUser.orders;
+			orders.sort(function (a, b) {
+				return new Date(b.date) - new Date(a.date);
+			});
+
+			res.render("profile", { orders: orders });
+		}
+	});
+});
+
+// GAMES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 app.get('/games',isLoggedIn,function(req,res){
 	res.render("games");
 })
 
-//-----------------------------AUTH--------------------------------------
+app.get("/8puzzle", isLoggedIn, function (req, res) {
+	res.render("8puzzle");
+});
+
+app.get("/connect4", isLoggedIn, function (req, res) {
+	res.render("connect4");
+});
+
+
+
+// AUTH ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 app.get("/login", function (req, res) {
 	res.render("login");
@@ -956,8 +953,7 @@ app.post("/deliverylogin", function (req, res, next) {
 			succssFlash: true,
 		},
 		function (err, user) {
-			// console.log(req.user);
-			// console.log(user);
+			
 			if (err) {
 				return next(err);
 			}
@@ -973,8 +969,7 @@ app.post("/deliverylogin", function (req, res, next) {
 				if (err) {
 					return next(err);
 				}
-				// console.log(" ----- req.user -----");
-				// console.log(req.user);
+				
 				req.flash("success", "Welcome back " + user.name);
 				return res.redirect("/delivery");
 			});
@@ -1036,11 +1031,10 @@ app.get("/logout", function (req, res) {
 	res.redirect("/");
 });
 
-app.get("/cookies", function (req, res) {
-	res.render("cookies");
-});
 
-//===================== MIDDLEWARE =================//
+
+//===================== MIDDLEWARE =============================================
+
 function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
@@ -1066,6 +1060,9 @@ function isDeliveryAgentLoggedIn(req, res, next) {
 		res.redirect("/deliverylogin");
 	}
 }
+
+
+//========================== RUN ==================================
 
 var port = process.env.PORT || 3000
 app.listen(port, () => {
