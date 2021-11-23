@@ -38,7 +38,7 @@
             crossorigin="anonymous"
         ></script>
         <script>
-            var username = "bhavya@gmail.com";
+            var username = "<%= currentUser.username %>";
             function getCookie(cname) {
               let name = cname + "=";
               let decodedCookie = decodeURIComponent(document.cookie);
@@ -68,12 +68,9 @@
             }
             function setcookie(gameNo) {
                 var cname = username + "GAME" + gameNo.toString();
-                console.log("hhh");
                 let user = getCookie(cname);
                 let value=parseInt(user[0]);
-                console.log(user);
                 if (user == "" || user==null) {
-                    console.log('yy');
                     const d = new Date();
                     d.setTime(d.getTime() + (24*60*60*1000));
                     let expires = "expires=" + d.toGMTString();
@@ -87,24 +84,12 @@
                     document.cookie = cname + "=" + (value+1).toString() + expires+ ";" + expires + ";path=/";
                 } 
                 else {
-                    console.log("ww")
                     var el = document.getElementById("game" + gameNo.toString());
                     el.disabled=true;
                    
                 }
             }
-            
-            
-            /*function setCookie(cname, cvalue, exdays, newCookie) {
-                const d = new Date();
-                if (newCookie) {
-                    d.setTime(d.getTime() + exdays * 24 * 60 * 60);
-                    let expires = "expires=" + d.toGMTString();
-                }
-                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-            } */
-
-            
+                
         </script>
         
     </body>
