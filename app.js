@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const passport = require("passport");
@@ -13,7 +14,8 @@ const Razorpay = require("razorpay");
 const cors = require("cors");
 app.use(cors());
 
-// seedDB()
+const {isLoggedIn, isDeliveryAgentLoggedIn} = require('./middleware/authentication.js');
+
 
 const instance = new Razorpay({
 	key_id: process.env.KEY_ID,
@@ -23,6 +25,7 @@ const instance = new Razorpay({
 const User = require("./models/user");
 const FoodItem = require("./models/foodItem");
 const Order = require("./models/order");
+
 
 mongoose.connect( process.env.MONGO_URI,
 	{
@@ -71,7 +74,9 @@ app.use(express.static(__dirname + "/public"));
 const geolib = require("geolib");
 const axios = require("axios");
 
-//======================= TSP FUNCTIONS  ========================================
+var userRouter = require('./routes/auth.routes');
+var cartRouter = require('./routes/cart.routes');
+
 var NO_OF_CHILDREN = 0;
 var N = 0;
 var CITIES = [];
@@ -90,6 +95,7 @@ function create_initial_population() {
 		GENE_POOL.push(tour);
 	}
 }
+
 function calculate_fitness(arr) {
 	var sum = 0;
 	for (var i = 1; i < arr.length; i++)
@@ -109,6 +115,7 @@ function calculate_fitness(arr) {
 		);
 	return sum;
 }
+
 function select_best_genes() {
 	var pq = [];
 	for (var i = 0; i < GENE_POOL.length; i++)
@@ -122,6 +129,7 @@ function select_best_genes() {
 	GENE_POOL = [];
 	for (var i = 0; i < NO_OF_CHILDREN; i++) GENE_POOL[i] = PARENTS[i];
 }
+
 function getChild(p1, p2, l) {
 	let c1 = [],
 		c2 = [];
@@ -145,6 +153,7 @@ function getChild(p1, p2, l) {
 
 	return [c1, c2];
 }
+
 function crossover() {
 	const len = Math.log2(N);
 	offsprings = [];
@@ -159,6 +168,7 @@ function crossover() {
 		}
 	}
 }
+
 function mutation() {
 	for (var i = 0; i < Math.floor(Math.log2(NO_OF_CHILDREN)); i++) {
 		for (var j = 0; j < 2; j++) {
@@ -172,6 +182,7 @@ function mutation() {
 		}
 	}
 }
+
 function genetic_TSP() {
 	create_initial_population();
 	let iterations = 0;
@@ -185,6 +196,7 @@ function genetic_TSP() {
 	select_best_genes();
 	return [PARENTS[0], calculate_fitness(PARENTS[0])];
 }
+
 const getAdd = async (add) => {
 	try {
 		return await axios.get(
@@ -196,6 +208,7 @@ const getAdd = async (add) => {
 		console.error(error);
 	}
 };
+
 const _addressToLatLng = async (address) => {
 	const resp = await getAdd(address);
 	if (resp.data) {
@@ -213,24 +226,6 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 	Order.find({ isDelivered: false }, async function (err, allOrders) {
 		if (err) console.log(err);
 		else {
-			// var map = {};
-			// allOrders.forEach((order) => {
-			// 	var diff = currdt - order.date;
-			// 	diff = diff / 1000;
-
-			// 	var x = Math.ceil(diff / 1200);
-			// 	if (map[x] === undefined) map[x] = [];
-			// 	map[x].push(order);
-			// });
-			// var schedule = [];
-			// var cost = [];
-			// for (var key in map) {
-			// 	var temp = [];
-			// 	for (var a in map[key]) {
-			// 		temp.push(map[key][a]);
-			// 	}
-			// 	schedule.push(temp);
-			// }
 			var map = {};
 			var schedule = [];
 			for (var i = 0; i < allOrders.length; i++) {
@@ -247,11 +242,6 @@ app.get("/tsp/:deliveryNo", isDeliveryAgentLoggedIn ,async function (req, res) {
 				}
 				schedule.push(temp);
 			}
-			// for (var k = 0; k < schedule.length; k++) {
-			// 	for (var j = 0; j < schedule[k].length; j++)
-			// 		console.log(schedule[k][j]["total"]);
-			// 	console.log();
-			// }
 			var allOrders = schedule[req.params.deliveryNo];
 
 			NO_OF_CHILDREN = 0;
@@ -339,26 +329,6 @@ app.get("/delivery", isDeliveryAgentLoggedIn , function (req, res) {
 				}
 				schedule.push(temp);
 			}
-			// allOrders.forEach((order) => {
-			// 	var diff = currdt - order.date;
-			// 	diff = diff / 1000;
-
-			// 	var x = Math.ceil(diff / 1200);
-			// 	if (map[x] === undefined) map[x] = [];
-			// 	map[x].push(order);
-			// });
-			// var schedule = [];
-			// var cost = [];
-			// for (var key in map) {
-			// 	var temp = [];
-			// 	var sum = 0;
-			// 	for (var a in map[key]) {
-			// 		sum = sum + map[key][a]["total"];
-			// 		temp.push(map[key][a]);
-			// 	}
-			// 	cost.push(sum);
-			// 	schedule.push(temp);
-			// }
 			var cost = [];
 			for (var i = 0; i < schedule.length; i++) {
 				var sum = 0;
@@ -440,228 +410,7 @@ app.get("/menu", (req, res) => {
 	});
 });
 
-app.get("/cart", isLoggedIn, (req, res) => {
-	User.findById(req.user._id, async function (err, founduser) {
-		if (err) {
-			console.log(err);
-			return res.redirect("back");
-		} else {
-			founduser.cart.amountPayable = Math.max(
-				0,
-				founduser.cart.total -
-					Math.floor(founduser.wallet / 100),
-			);
-			founduser.cart.discountApplied = Math.min(
-				founduser.cart.total,
-				Math.floor(founduser.wallet / 100),
-			);
-			founduser.markModified('cart');
-			await founduser.save()
-			cart = founduser.cart.foodItems.sort(function (a, b) {
-				var nameA = a.title.toUpperCase();
-				var nameB = b.title.toUpperCase();
-				if (nameA < nameB) {
-					return -1;
-				}
-				if (nameA > nameB) {
-					return 1;
-				}
-				return 0;
-				});
-			
-			res.render("cart", { items: cart,wallet:founduser.wallet, total: founduser.cart.total,amountPayable : founduser.cart.amountPayable,discountApplied : founduser.cart.discountApplied });
-		}
-	});
-});
-
-app.post("/cart/:id", isLoggedIn, function (req, res) {
-	User.findById(req.user._id, function (err, founduser) {
-		if (err) {
-			console.log(err);
-			return res.redirect("back");
-		} else {
-			FoodItem.findById(req.params.id, function (err, foundItem) {
-				if (err) {
-					console.log(err);
-					return res.redirect("back");
-				} else {
-					if (founduser.cart.foodItems.length == 0) {
-						founduser.cart.total = foundItem.cost;
-					} else {
-						founduser.cart.total =
-							founduser.cart.total + foundItem.cost;
-					}
-					var f = 0;
-					var i = 0;
-					for (i = 0; i < founduser.cart.foodItems.length; i++) {
-						if (
-							founduser.cart.foodItems[i]._id.toString() ==
-							req.params.id.toString()
-						) {
-							f = 1;
-							
-							break;
-						}
-					}
-					if (f == 0) {
-						founduser.cart.foodItems.push(foundItem);
-						founduser.cart.amountPayable = Math.max(
-							0,
-							founduser.cart.total -
-								Math.floor(founduser.wallet / 100),
-						);
-						founduser.cart.discountApplied = Math.min(
-							founduser.cart.total,
-							Math.floor(founduser.wallet / 100),
-						);
-						founduser.save();
-					} else {
-						
-						var q = founduser.cart.foodItems[i].qty;
-						
-						
-						founduser.cart.foodItems[i].qty = q + 1;
-						
-						founduser.cart.amountPayable = Math.max(
-							0,
-							founduser.cart.total -
-								Math.floor(founduser.wallet / 100),
-						);
-						founduser.cart.discountApplied = Math.min(
-							founduser.cart.total,
-							Math.floor(founduser.wallet / 100),
-						);
-						founduser.markModified("cart");
-						founduser.save();
-						
-					}
-
-					//   founduser.wallet += 160;
-
-					req.flash("success", foundItem.title + " added to cart.");
-					return res.redirect("/menu#" + foundItem.category);
-				}
-			});
-		}
-	});
-});
-
-app.delete("/cartpage/:id", isLoggedIn, function (req, res) {
-	User.findById(req.user._id, function (err, founduser) {
-		if (err) {
-			console.log(err);
-			return res.redirect("back");
-		} else {
-			FoodItem.findById(req.params.id, function (err, foundItem) {
-				if (err) {
-					console.log(err);
-					return res.redirect("back");
-				} else {
-					var index = -1;
-					
-					for (var i = 0; i < founduser.cart.foodItems.length; i++) {
-						if (
-							founduser.cart.foodItems[i]._id.toString() ==
-							foundItem._id.toString()
-						) {
-							index = i;
-						}
-					}
-
-					if (index !== -1) {
-						founduser.cart.total =
-							founduser.cart.total -
-							founduser.cart.foodItems[index].cost;
-						if (founduser.cart.foodItems[index].qty > 1) {
-							founduser.cart.foodItems[index].qty -= 1;
-							req.flash(
-								"success",
-								foundItem.title + "'s quantity decreased by 1 .",
-							);
-						} else {
-							founduser.cart.foodItems.splice(index, 1);
-							req.flash(
-								"success",
-								foundItem.title + " removed from cart.",
-							);
-						}
-					}
-					founduser.cart.amountPayable = Math.max(
-						0,
-						founduser.cart.total -
-							Math.floor(founduser.wallet / 100),
-					);
-					founduser.cart.discountApplied = Math.min(
-						founduser.cart.total,
-						Math.floor(founduser.wallet / 100),
-					);
-					founduser.markModified('cart');
-					founduser.save();
-					// req.flash(
-					// 	"success",
-					// 	foundItem.title + " removed from cart.",
-					// );
-					return res.redirect("/menu#" + foundItem.category);
-				}
-			});
-		}
-	});
-});
-
-app.delete("/cart/:id", isLoggedIn, function (req, res) {
-	User.findById(req.user._id, function (err, founduser) {
-		if (err) {
-			console.log(err);
-			return res.redirect("back");
-		} else {
-			FoodItem.findById(req.params.id, function (err, foundItem) {
-				if (err) {
-					console.log(err);
-					return res.redirect("back");
-				} else {
-					var index = -1;
-					
-					for (var i = 0; i < founduser.cart.foodItems.length; i++) {
-						if (
-							founduser.cart.foodItems[i]._id.toString() ==
-							foundItem._id.toString()
-						) {
-							index = i;
-						}
-					}
-
-					if (index !== -1) {
-						founduser.cart.total =
-							founduser.cart.total -
-							(founduser.cart.foodItems[index].cost*founduser.cart.foodItems[index].qty);
-							founduser.cart.foodItems.splice(index, 1);
-							req.flash(
-								"success",
-								foundItem.title + " removed from cart.",
-							);
-						
-					}
-					founduser.cart.amountPayable = Math.max(
-						0,
-						founduser.cart.total -
-							Math.floor(founduser.wallet / 100),
-					);
-					founduser.cart.discountApplied = Math.min(
-						founduser.cart.total,
-						Math.floor(founduser.wallet / 100),
-					);
-					founduser.markModified('cart');
-					founduser.save();
-					// req.flash(
-					// 	"success",
-					// 	foundItem.title + " removed from cart.",
-					// );
-					return res.redirect("/cart");
-				}
-			});
-		}
-	});
-});
+app.use('/cart', cartRouter);
 
 app.get("/profile", isLoggedIn, function (req, res) {
 	User.findById(req.user._id, function (err, foundUser) {
@@ -856,216 +605,12 @@ app.get('/games',isLoggedIn,function(req,res){
 })
 
 //-----------------------------AUTH--------------------------------------
-
-app.get("/login", function (req, res) {
-	res.render("login");
-});
-
-app.post("/login", function (req, res, next) {
-	passport.authenticate(
-		"local",
-		{
-			successRedirect: "/",
-			failureRedirect: "/login",
-			failureFlash: true,
-			succssFlash: true,
-		},
-		function (err, user) {
-			if (err) {
-				return next(err);
-			}
-			if (!user) {
-				req.flash("error", "Password or Email does not match");
-				return res.redirect("/login");
-			}
-			if (user.isCustomer == false) {
-				req.flash("error", "Please login via Delivery Agent Portal");
-				return res.redirect("/deliverylogin");
-			}
-			req.logIn(user, function (err) {
-				if (err) {
-					return next(err);
-				}
-				req.flash("success", "Welcome back " + user.name);
-				return res.redirect("/");
-			});
-		},
-	)(req, res, next);
-});
-
-app.get("/signup", function (req, res) {
-	res.render("signup");
-});
-
-app.post("/signup", function (req, res) {
-	console.log(req.body);
-	var newUser = new User({
-		username: req.body.username,
-		name: req.body.name,
-		phone: req.body.phone,
-		isCustomer: true,
-	});
-	var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
-	var addressObj = {
-		fullAddress: inputAddress,
-		flatwing: req.body.flatwing,
-		locality: req.body.locality,
-		pincode: req.body.pincode,
-		city: req.body.city,
-	};
-	newUser.addresses.push(addressObj);
-	User.register(newUser, req.body.password, function (err, user) {
-		if (err) {
-			console.log(err);
-			if (
-				err.message ==
-				"A user with the given username is already registered"
-			) {
-				req.flash(
-					"error",
-					"A user with the given Email Id is already registered",
-				);
-				return res.redirect("/signup");
-			} else {
-				req.flash(
-					"error",
-					"A user with the given Phone No. is already registered",
-				);
-				return res.redirect("/signup");
-			}
-		} else {
-			passport.authenticate("local")(req, res, function () {
-				req.flash("success", "Welcome to Dyce & Dyne " + user.name);
-				res.redirect("/");
-			});
-		}
-	});
-});
-
-app.get("/deliverylogin", function (req, res) {
-	res.render("deliverylogin");
-});
-
-app.post("/deliverylogin", function (req, res, next) {
-	passport.authenticate(
-		"local",
-		{
-			successRedirect: "/",
-			failureRedirect: "/deliverylogin",
-			failureFlash: true,
-			succssFlash: true,
-		},
-		function (err, user) {
-			// console.log(req.user);
-			// console.log(user);
-			if (err) {
-				return next(err);
-			}
-			if (!user) {
-				req.flash("error", "Password or Email does not match");
-				return res.redirect("/deliverylogin");
-			}
-			if (user.isCustomer == true) {
-				req.flash("error", "Please login via Customer Portal");
-				return res.redirect("/login");
-			}
-			req.logIn(user, function (err) {
-				if (err) {
-					return next(err);
-				}
-				// console.log(" ----- req.user -----");
-				// console.log(req.user);
-				req.flash("success", "Welcome back " + user.name);
-				return res.redirect("/delivery");
-			});
-		},
-	)(req, res, next);
-});
-
-app.get("/deliverysignup", function (req, res) {
-	res.render("deliverysignup");
-});
-
-app.post("/deliverysignup", function (req, res) {
-	var newDeliveryAgent = new User({
-		username: req.body.username,
-		name: req.body.name,
-		phone: req.body.phone,
-		isCustomer: false,
-	});
-	var inputAddress = `${req.body.flatwing}\n${req.body.locality}\n${req.body.pincode}\n${req.body.city}`;
-	var addressObj = {
-		fullAddress: inputAddress,
-		flatwing: req.body.flatwing,
-		locality: req.body.locality,
-		pincode: req.body.pincode,
-		city: req.body.city,
-	};
-	newDeliveryAgent.addresses.push(addressObj);
-	User.register(newDeliveryAgent, req.body.password, function (err, user) {
-		if (err) {
-			console.log(err);
-			if (
-				err.message ==
-				"A user with the given username is already registered"
-			) {
-				req.flash(
-					"error",
-					"A delivery agent with the given Email Id is already registered",
-				);
-				return res.redirect("/deliverysignup");
-			} else {
-				req.flash(
-					"error",
-					"A delivery agent with the given Phone No. is already registered",
-				);
-				return res.redirect("/deliverysignup");
-			}
-		} else {
-			passport.authenticate("local")(req, res, function () {
-				req.flash("success", "Welcome to Dyce & Dyne " + user.name);
-				res.redirect("/delivery");
-			});
-		}
-	});
-});
-
-app.get("/logout", function (req, res) {
-	req.logout();
-	req.flash("success", "Logged you out!");
-	res.redirect("/");
-});
+app.use('/auth', userRouter);
 
 app.get("/cookies", function (req, res) {
 	res.render("cookies");
 });
 
-//===================== MIDDLEWARE =================//
-function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	} else {
-		req.flash("error", "You need to be logged in to do that.");
-		res.redirect("/login");
-	}
-}
-
-function isDeliveryAgentLoggedIn(req, res, next) {
-	if (req.isAuthenticated()) {
-		if (!req.user.isCustomer) {
-			return next();
-		} else {
-			req.flash(
-				"error",
-				"This Page can only be accessed by a Delivery Agent",
-			);
-			res.redirect("/deliverylogin");
-		}
-	} else {
-		req.flash("error", "You need to be logged in to do that.");
-		res.redirect("/deliverylogin");
-	}
-}
 
 var port = process.env.PORT || 3000
 app.listen(port, () => {

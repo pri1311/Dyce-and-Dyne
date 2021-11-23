@@ -57,7 +57,7 @@
 				</div>
 				<div class="col-sm-6 login-section-wrapper">
 					<div class="">
-						<img src="./images/logo.png" alt="logo" class="logo" height="75px" />
+						<img src="/images/logo.png" alt="logo" class="logo" height="75px" />
 					</div>
 					<div class="container flash-container">
 						<% if(error && error.length> 0 ) { %>
@@ -110,7 +110,7 @@
 					</div>
 					<div class="login-wrapper my-auto">
 						<h5 style="font-style:italic; font-weight:700;" class="mb-5" >Welcome back!</h5>
-						<form action="/login" method="post">
+						<form action="/auth/login" method="post">
 							<div class="form-group">
 								<label for="email">Email</label>
 								<input
@@ -144,7 +144,7 @@
 
 						<p class="login-wrapper-footer-text">
 							Don't have an account?
-							<a href="/signup" class="text-reset"
+							<a href="/auth/signup" class="text-reset"
 								><span style="text-decoration: underline"
 									>Register here</span
 								></a

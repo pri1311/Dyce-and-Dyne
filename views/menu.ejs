@@ -68,7 +68,7 @@
         </li>
         <% if(!currentUser) {%>
         <li class="nav-item">
-          <a class="nav-link link-navbar" href="/login">Login</a>
+          <a class="nav-link link-navbar" href="/auth/login">Login</a>
         </li>
         <% } else { %>
 			<li class="nav-item">
@@ -88,7 +88,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item link-navbar" href="/profile">Profile</a>
-            <a class="dropdown-item link-navbar" href="/logout">Logout</a>
+            <a class="dropdown-item link-navbar" href="/auth/logout">Logout</a>
           </div>
         </li>
         <% } %>
@@ -188,7 +188,7 @@
                                                         <% } else { %>
                                                             
                                                         <div class="col-sm-5 col-lg-3 d-flex">
-                                                            <form action="/cartpage/<%= allItems[i]._id %>?_method=DELETE" method="post">
+                                                            <form action="/cart/decrement/<%= allItems[i]._id %>?_method=DELETE" method="post">
                                                                 <button type="submit" style="	height: 2em;width: 2em;background: #f2f2f2;border: 1px solid #ddd;text-align: center;color: black;font-weight: bolder;font-size: 1em;padding: auto;align-items: center;align-content: center;" class="btn btn-outline-warning rounded-lg">-</button>
                                                             </form>
                                                             
