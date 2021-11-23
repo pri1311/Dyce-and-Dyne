@@ -101,6 +101,9 @@ function getSavedBoard() {
 	}
 }
 
+
+// Get a new random board
+// Currently not in use
 function getNewBoard() {
 	player_moves = 0;
 	AI_moves = 0;
@@ -119,6 +122,8 @@ function getNewBoard() {
 	console.log(somelist);
 }
 
+// Get new game
+// Currently not in use
 async function getNewGame() {
 	var loader = document.getElementById("container-loading");
 	var game = document.getElementById("game");
@@ -210,6 +215,8 @@ function clickTile(row, column) {
 		}
 	}
 }
+
+// Add points to user's wallet.
 function addWalletPoints(method) {
 	var points = parseInt((AI_moves * 100) / player_moves);
 	axios({
@@ -217,7 +224,7 @@ function addWalletPoints(method) {
 		url: "/addWalletPoints",
 		data: {
 			points: points,
-			game: "/8puzzle",
+			game: "/games/8puzzle",
 		},
 	});
 	alert("Points saved to your wallet !");

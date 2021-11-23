@@ -316,7 +316,7 @@ body {
 
                 console.log(id);
                 console.log("HELLO")
-                 axios.get('/changeDeliveryStatus/'+id)
+                 axios.get('/delivery/changeDeliveryStatus/'+id)
                     .then((resp)=>{
                     if(resp.data.status == "OK"){
                         console.log("BHAVYA IS HOT")

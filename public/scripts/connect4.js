@@ -287,7 +287,7 @@ function addWalletPoints(method) {
 		url: "/addWalletPoints",
 		data: {
 			points: points,
-			game: "/connect4",
+			game: "/games/connect4",
 		},
 	});
 	alert("Points saved to your wallet !");
