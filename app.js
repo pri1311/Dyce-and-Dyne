@@ -77,6 +77,9 @@ var cartRouter = require('./routes/cart.routes');
 var deliveryRouter = require('./routes/delivery.routes');
 var gamesRouter = require('./routes/games.routes');
 
+
+// HOME PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 app.get("/", (req, res) => {
 	var recItems = [
 		{
@@ -116,6 +119,9 @@ app.get("/", (req, res) => {
 	res.render("index",{topItems : recItems});
 });
 
+// MENU & CART ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//Renders the list of all menu items
 app.get("/menu", (req, res) => {
 	FoodItem.find(function (err, allItems) {
 		if (err) {
@@ -170,6 +176,7 @@ app.post("/addWalletPoints", isLoggedIn, function (req, res) {
 	});
 });
 
+//Order food via COD
 app.get("/ordercod", isLoggedIn, function (req, res) {
 	cart = req.user.cart.foodItems.sort(function (a, b) {
 		var nameA = a.title.toUpperCase();
@@ -207,6 +214,7 @@ app.get("/ordercard", isLoggedIn, function (req, res) {
 	});
 });
 
+//Razorpay integrations.
 app.post("/api/payment/order", (req, res) => {
 	params = req.body;
 	instance.orders
@@ -236,8 +244,6 @@ app.post("/api/payment/verify", (req, res) => {
 
 app.post("/afterOrderPlaced", (req, res) => {
 	if (req.isAuthenticated()) {
-		// console.log("hit!");
-		// console.log(req.body);
 		User.findById(req.user._id, (err, founduser) => {
 			if (err) console.log(err);
 			else {
@@ -261,16 +267,16 @@ app.post("/afterOrderPlaced", (req, res) => {
 					if (err) {
 						console.log(err);
 					} else {
-						// console.log(FoodItem);
+						
 						var f = 0;
 						founduser.addresses.forEach((address) => {
 							if (address.fullAddress == inputAddress) {
-								// console.log("000000");
+								
 								f = 1;
 							}
 						});
 						if (f == 0) {
-							//   console.log("01011010");
+			
 							var addressObj = {
 								fullAddress: inputAddress,
 								flatwing: req.body.flatwing,
@@ -300,6 +306,7 @@ app.post("/afterOrderPlaced", (req, res) => {
 	}
 });
 
+//Show status of the order.
 app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 	Order.find({ _id: req.params.orderID }, (err, foundOrder) => {
 		if (err) console.log(err);
@@ -316,10 +323,10 @@ app.get("/orderconfirmed/:orderID", isLoggedIn, (req, res) => {
 //-----------------------------AUTH--------------------------------------
 app.use('/auth', userRouter);
 
-app.get("/cookies", function (req, res) {
-	res.render("cookies");
-});
 
+
+
+//========================== RUN ==================================
 
 var port = process.env.PORT || 3000
 app.listen(port, () => {
